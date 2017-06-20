@@ -2,6 +2,10 @@
 #
 .DS_Store
 
+# Visual Studio code
+#
+.vscode/
+
 # Xcode
 #
 build/
@@ -51,3 +55,5 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+
+jsconfig.json

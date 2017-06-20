@@ -18,9 +18,11 @@ import {
 } from 'react-navigation';
 
 import Trough from "./src/main.js";
+import TeamSearch from "./src/TeamSearch.js"
 
 const App = StackNavigator({
-  Main: {screen: Trough}
+  Main: {screen: Trough},
+  signup: {screen: TeamSearch}
 });
 
 

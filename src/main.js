@@ -3,23 +3,52 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput,
+  Button
 } from 'react-native';
 
 export default class Trough extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+          email: undefined,
+          password: undefined
+      }
+  }
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+        <View style={styles.overall}>
+            <TextInput
+                value={this.state.email}
+                onChangeText = {(text) => this.setState({text})}
+                placeholder="Email"
+            />
+            <TextInput
+                value={this.state.password}
+                onChangeText = {(text) => this.setState({text})}
+                placeholder="password"
+                secureTextEntry={true}
+            />
+            <View>
+                <Button
+                    style={styles.button}
+                    title="Sign Up"
+                    onPress={() =>
+                        navigate('signup')
+                    } 
+                />
+
+                <Button
+                    title="Login"
+                    onPress={() =>
+                        null
+                    } 
+                />
+            </View>
+        </View>
       </View>
     );
   }
@@ -32,14 +61,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  overall: {
+    width: "75%"
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  button: {
+    margin:30
   },
 });
