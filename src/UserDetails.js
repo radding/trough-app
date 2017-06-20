@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import CheckBox from 'react-native-checkbox';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   TextInput,
-  Button
+  Button,
 } from 'react-native';
 
 export default class UserDetails extends Component {
@@ -14,10 +15,12 @@ export default class UserDetails extends Component {
 			this.state = {
 				email: undefined,
 				password: undefined,
-				confirmPassword: undefined
+				confirmPassword: undefined,
+				overTwentyOne: false
 			}
   }
   render() {
+  	const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
 				<View style={styles.overall}>
@@ -38,6 +41,20 @@ export default class UserDetails extends Component {
 						placeholder="Confirm Password"
 						secureTextEntry={true}
 					/>
+					<CheckBox
+						checked={this.state.confirmPassword}
+						label="Are you over 21 years old?"
+						onChange={(checked) => {this.setState({overTwentyOne: !checked})}}
+					/>
+					<View>
+						<Button
+							style={styles.button}
+							title="Sign Up"
+							onPress={() =>
+								navigate('signup')
+							} 
+						/>
+					</View>
 				</View>
 			</View>
 		)
