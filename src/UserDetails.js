@@ -42,7 +42,7 @@ export default class UserDetails extends Component {
 						secureTextEntry={true}
 					/>
 					<CheckBox
-						checked={this.state.confirmPassword}
+						checked={this.state.overTwentyOne}
 						label="Are you over 21 years old?"
 						onChange={(checked) => {this.setState({overTwentyOne: !checked})}}
 					/>
@@ -51,7 +51,7 @@ export default class UserDetails extends Component {
 							style={styles.button}
 							title="Sign Up"
 							onPress={() => { 
-								fetch('https://mywebsite.com/endpoint/', {
+								fetch('https://trough-api.herokuapp.com/auth/', {
 									method: 'POST',
 									headers: {
 										'Accept': 'application/json',
@@ -64,7 +64,14 @@ export default class UserDetails extends Component {
 										// TODO: include age parameter later
 									})
 								})
-							}} 
+								.then((response) => response.json())
+								.then((responseJson) => {
+									//Do something
+								})
+								.catch((error) => {
+									console.error(error);
+								})
+							}}
 						/>
 					</View>
 				</View>
