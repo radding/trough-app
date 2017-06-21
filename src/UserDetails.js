@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CheckBox from 'react-native-checkbox';
 import {
   AppRegistry,
+  Alert,
   StyleSheet,
   Text,
   View,
@@ -26,18 +27,18 @@ export default class UserDetails extends Component {
 				<View style={styles.overall}>
 					<TextInput
 						value={this.state.email}
-						onChangeText = {(text) => this.setState({text})}
+						onChangeText = {(text) => this.setState({email: text})}
 						placeholder="Email"
 					/>
 					<TextInput
 						value={this.state.password}
-						onChangeText = {(text) => this.setState({text})}
+						onChangeText = {(text) => this.setState({password: text})}
 						placeholder="Password"
 						secureTextEntry={true}
 					/>
 					<TextInput
 						value={this.state.confirmPassword}
-						onChangeText = {(text) => this.setState({text})}
+						onChangeText = {(text) => this.setState({confirmPassword: text})}
 						placeholder="Confirm Password"
 						secureTextEntry={true}
 					/>
@@ -51,22 +52,26 @@ export default class UserDetails extends Component {
 							style={styles.button}
 							title="Sign Up"
 							onPress={() => { 
-								fetch('https://trough-api.herokuapp.com/auth/', {
+								fetch("https://trough-api.herokuapp.com/auth/", {
 									method: 'POST',
 									headers: {
-										'Accept': 'application/json',
-										'Content-Type': 'application/json',	
+										'Content-Type': 'application/json'	
 									},
 									body: JSON.stringify({
 										email: this.state.email,
 										password: this.state.password,
-										password_confirmation: this.state.confirmPassword 
-										// TODO: include age parameter later
+										password_confirmation: this.state.confirmPassword
 									})
 								})
 								.then((response) => response.json())
 								.then((responseJson) => {
-									//Do something
+									//Do something about session
+									if (responseJson["status"] === "success") {
+										Alert.alert("You are now registered!");
+									}
+									else {
+										Alert.alert(responseJson["errors"]["full_messages"][0]);
+									}
 								})
 								.catch((error) => {
 									console.error(error);
