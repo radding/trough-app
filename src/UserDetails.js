@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CheckBox from 'react-native-checkbox';
+import {User} from './Models';
 import {
   AppRegistry,
   Alert,
@@ -10,20 +11,48 @@ import {
   Button,
 } from 'react-native';
 
+
 export default class UserDetails extends Component {
   constructor(props) {
 			super(props);
 			this.state = {
 				email: undefined,
 				password: undefined,
-				confirmPassword: undefined,
-				overTwentyOne: false
+				password_confirmation: undefined,
+				overTwentyOne: false,
+				errorMessages: []
 			}
+			this.userCreate = this.userCreate.bind(this)
   }
+
+  async userCreate()
+  {
+  	this.setState({errorMessages: []})
+  	try {
+  		var errors = await User.Create({
+								email: this.state.email,
+								password: this.state.password,
+								password_confirmation: this.state.password_confirmation});
+		}
+		catch (errors) {
+			if(errors.user_error) {
+				var parsed_errors = errors['details']['full_messages'].map((error) => {
+					return (
+						<Text key={error}> {error} </Text>
+						)
+				});
+				this.setState({errorMessages: parsed_errors})
+			}
+			else
+				console.warn("Something went horribly wrong");
+		}	
+  }
+
   render() {
   	const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
+				{this.state.errorMessages}
 				<View style={styles.overall}>
 					<TextInput
 						value={this.state.email}
@@ -37,8 +66,8 @@ export default class UserDetails extends Component {
 						secureTextEntry={true}
 					/>
 					<TextInput
-						value={this.state.confirmPassword}
-						onChangeText = {(text) => this.setState({confirmPassword: text})}
+						value={this.state.password_confirmation}
+						onChangeText = {(text) => this.setState({password_confirmation: text})}
 						placeholder="Confirm Password"
 						secureTextEntry={true}
 					/>
@@ -51,32 +80,7 @@ export default class UserDetails extends Component {
 						<Button
 							style={styles.button}
 							title="Sign Up"
-							onPress={() => { 
-								fetch("https://trough-api.herokuapp.com/auth/", {
-									method: 'POST',
-									headers: {
-										'Content-Type': 'application/json'	
-									},
-									body: JSON.stringify({
-										email: this.state.email,
-										password: this.state.password,
-										password_confirmation: this.state.confirmPassword
-									})
-								})
-								.then((response) => response.json())
-								.then((responseJson) => {
-									//Do something about session
-									if (responseJson["status"] === "success") {
-										Alert.alert("You are now registered!");
-									}
-									else {
-										Alert.alert(responseJson["errors"]["full_messages"][0]);
-									}
-								})
-								.catch((error) => {
-									console.error(error);
-								})
-							}}
+							onPress={this.userCreate}
 						/>
 					</View>
 				</View>
