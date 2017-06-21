@@ -50,9 +50,21 @@ export default class UserDetails extends Component {
 						<Button
 							style={styles.button}
 							title="Sign Up"
-							onPress={() =>
-								navigate('signup')
-							} 
+							onPress={() => { 
+								fetch('https://mywebsite.com/endpoint/', {
+									method: 'POST',
+									headers: {
+										'Accept': 'application/json',
+										'Content-Type': 'application/json',	
+									},
+									body: JSON.stringify({
+										email: this.state.email,
+										password: this.state.password,
+										password_confirmation: this.state.confirmPassword 
+										// TODO: include age parameter later
+									})
+								})
+							}} 
 						/>
 					</View>
 				</View>
