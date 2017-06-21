@@ -5,6 +5,14 @@ function TimeStamp(time) {
     return value.isValid() ? value : null;
 }
 
+function ArrayOf(Mapper) {
+    return (arr) => {
+        return arr.map((object) => {
+            return Mapper(object);
+        });
+    }
+}
+
 
 export {
     TimeStamp
