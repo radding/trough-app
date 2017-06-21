@@ -35,8 +35,9 @@ class Model {
                 converter = (obj) => {return obj};
             }
             else if(converter.prototype instanceof Model) {
+                var converter2 = converter;
                 converter = (obj) => {
-                    return new converter(obj);
+                    return new converter2(obj);
                 }
             }
             this[key] = converter(jsonObj[key]);
