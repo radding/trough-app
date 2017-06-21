@@ -44,7 +44,8 @@ class Model {
     }
 
     _serialize() {
-        var serializedObject = {[this._modelName]: {}};
+        var serializedObject = {}
+        serializedObject[this._modelName] = {};
 
         Object.keys(this.jsonFields).map((value) => {
             serializedObject[this._modelName][value] = this[value] || null;
@@ -64,9 +65,6 @@ class Model {
 
     static async All() {
         var res = await API.get(this._getURL());
-        // res.map((obj) => {
-        //     throw this.constructor(obj);            
-        // })
         var arr = res.map((obj) => new this(obj));
         return arr;
     }
@@ -75,6 +73,7 @@ class Model {
         if (this.new) {
             return this.create();
         }
+        this.new = false;
         return this.api.put(this.myUrl, this._serialize()) 
     }
 
@@ -83,7 +82,8 @@ class Model {
     }
 
     create() {
-        return this.api.post(this.myUrl, this._serialize());
+        this.new = false;
+        return this.api.post(this.constructor._getURL(), this._serialize());
     }
 
     static Create(obj) {

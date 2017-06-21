@@ -1,7 +1,9 @@
 class APIRequests {
     constructor(url) {
         this.url = url
-        this.headers = {};
+        this.headers = {
+            'Content-Type': 'application/json'
+        };
         this.addHeader = this.addHeader.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
         this.getAsync = this.getAsync.bind(this);
@@ -16,6 +18,8 @@ class APIRequests {
     }
 
     sendRequest(url, method, body) {
+        // if (body.team)
+        //     throw JSON.stringify(body);
         if (method.toLowerCase() == "get") {
             return fetch(`https://${this.url}${url}`, {
                 headers: this.headers
@@ -39,7 +43,9 @@ class APIRequests {
     }
 
     post(url, body) {
-        return this.sendRequest(url, "POST", body).then((result) => result.json());
+        return this.sendRequest(url, "POST", body).then((result) => {
+            return result.json();   
+        });
     }
 
     put(url, body) {
