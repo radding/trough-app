@@ -23,7 +23,13 @@ function ArrayOf(Mapper) {
     }
 }
 
+function Nullable(converter) {
+		return (object) => {
+			return object ? converter(object) : null;
+		} 
+}
 
 export {
-    TimeStamp
+    TimeStamp,
+    Nullable
 }

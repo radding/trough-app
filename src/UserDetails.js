@@ -29,10 +29,12 @@ export default class UserDetails extends Component {
   {
   	this.setState({errorMessages: []})
   	try {
-  		var errors = await User.Create({
+  		var user = await User.Create({
 								email: this.state.email,
 								password: this.state.password,
 								password_confirmation: this.state.password_confirmation});
+  		var team = this.props.navigation.state.params.team;
+  		user.addTeam(team);
 		}
 		catch (errors) {
 			if(errors.user_error) {
@@ -41,10 +43,10 @@ export default class UserDetails extends Component {
 						<Text key={error}> {error} </Text>
 						)
 				});
-				this.setState({errorMessages: parsed_errors})
+				this.setState({errorMessages: parsed_errors});
 			}
 			else
-				console.warn("Something went horribly wrong");
+				throw errors;
 		}	
   }
 

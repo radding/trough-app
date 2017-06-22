@@ -1,7 +1,18 @@
-import { Model, API } from "../API";
+import { Model, API, Converters } from "../API";
 import { Alert } from 'react-native';
 
 export default class User extends Model {
+    get jsonFields() {
+      return Object.assign(super.jsonFields, {
+        email: String,
+        provider: String,
+        uid: String,
+        name: Converters.Nullable(String),
+        nickname: Converters.Nullable(String),
+        image: Converters.Nullable(String)
+      });
+ 	 }
+
 	static async Create(obj) {
 		try { 
 			var res = await API.rawPost("/auth/", obj);
@@ -11,6 +22,7 @@ export default class User extends Model {
 				API.addHeader("access_token", res.headers["access_token"]);
 				API.addHeader("client", res.headers["client"]);
 				API.addHeader("uid", res.headers["uid"]);
+				return new this(json.data)
 			}
 			else
 				//json["errors"]["full_messages"].map((object)=>{Alert.alert(object)})
@@ -20,8 +32,12 @@ export default class User extends Model {
 				};
 		}
 		catch (error) {
-			throw error;
+			console.warn("Something went horribly wrong");
 		}
+	}
+
+	addTeam(team){
+		this.api.post(`/teams/${team.id}/users`, this._serialize())
 	}
 
 }
