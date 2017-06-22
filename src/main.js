@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {User} from './Models';
 import {
   AppRegistry,
   StyleSheet,
@@ -13,9 +14,36 @@ export default class Trough extends Component {
       super(props);
       this.state = {
           email: undefined,
-          password: undefined
+          password: undefined,
+				  errorMessages: []
       }
+      this.userLogin = this.userLogin.bind(this);
   }
+  
+  async userLogin()
+  {
+  	this.setState({errorMessages: []})
+  	try {
+      Alert.alert("Email: " + email + "Password: " + passord)
+    var user = await User.Login({
+                email: this.state.email,
+                password: this.state.password});
+      Alert.alert(user.email);
+    }
+    catch (errors) {
+      if(errors.user_error) {
+        var parsed_errors = errors['details']['errors'].map((error) => {
+          return (
+            <Text key={error}> {error} </Text>
+          )
+        });
+        this.setState({errorMessages: parsed_errors});
+      }
+      else
+        console.warn("Something went horribly wrong");
+    }	
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -23,13 +51,13 @@ export default class Trough extends Component {
         <View style={styles.overall}>
             <TextInput
                 value={this.state.email}
-                onChangeText = {(text) => this.setState({text})}
+                onChangeText = {(text) => this.setState({email: text})}
                 placeholder="Email"
             />
             <TextInput
                 value={this.state.password}
-                onChangeText = {(text) => this.setState({text})}
-                placeholder="password"
+                onChangeText = {(text) => this.setState({passord: text})}
+                placeholder = "Password"
                 secureTextEntry={true}
             />
             <View>
@@ -38,14 +66,12 @@ export default class Trough extends Component {
                     title="Sign Up"
                     onPress={() =>
                         navigate('signup')
-                    } 
+                    }
                 />
 
                 <Button
                     title="Login"
-                    onPress={() =>
-                        null
-                    } 
+                    onPress= {this.userLogin}
                 />
             </View>
         </View>
