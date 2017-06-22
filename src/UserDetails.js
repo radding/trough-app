@@ -46,7 +46,7 @@ export default class UserDetails extends Component {
 				this.setState({errorMessages: parsed_errors});
 			}
 			else
-				throw errors;
+				console.warn("Something went horribly wrong");
 		}	
   }
 

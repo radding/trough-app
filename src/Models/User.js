@@ -32,7 +32,7 @@ export default class User extends Model {
 				};
 		}
 		catch (error) {
-			console.warn("Something went horribly wrong");
+			throw error;
 		}
 	}
 
