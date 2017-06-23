@@ -10,75 +10,34 @@ import {
   Alert
 } from 'react-native';
 
+import globals from "./globals.js";
+import SignIn from "./signin.js";
+import Feed from "./Feed.js";
+
 export default class Trough extends Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-          email: undefined,
-          password: undefined,
-				  errorMessages: []
-      }
-      this.userLogin = this.userLogin.bind(this);
-  }
-  
-  async userLogin()
-  {
-  	this.setState({errorMessages: []})
-    try {
-      var user = await User.Login({
-                  email: this.state.email,
-                  password: this.state.password});
-      Alert.alert(user.email);
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoggedIn: globals.user.isLoggedIn
+        }
+        this.setLoggedin = this.setLoggedin.bind(this);
     }
-    catch (errors) {
-      if(errors.user_error) {
-        var parsed_errors = errors['details']['errors'].map((error) => {
-          return (
-            <Text key={error}> {error} </Text>
-          )
+
+    setLoggedin(user) {
+        this.setState({
+            user: user,
+            isLoggedIn: user !== null ? user.isLoggedIn : false
         });
-        this.setState({errorMessages: parsed_errors});
-      }
-      else
-        console.warn("Something went horribly wrong " + JSON.stringify(errors));
-    }	
-  }
+    }
 
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        {this.state.errorMessages}
-        <View style={styles.overall}>
-            <TextInput
-                value={this.state.email}
-                onChangeText = {(text) => this.setState({email: text})}
-                placeholder="Email"
-            />
-            <TextInput
-                value={this.state.password}
-                onChangeText = {(text) => this.setState({password: text})}
-                placeholder = "Password"
-                secureTextEntry={true}
-            />
-            <View>
-                <Button
-                    style={styles.button}
-                    title="Sign Up"
-                    onPress={() =>
-                        navigate('signup')
-                    }
-                />
-
-                <Button
-                    title="Login"
-                    onPress= {this.userLogin}
-                />
-            </View>
-        </View>
-      </View>
-    );
-  }
+    render() {
+        if(!this.state.isLoggedIn) {
+            return ( <SignIn navigation={this.props.navigation} main={this} /> );
+        }
+        else {
+            return (<Feed navigation={this.props.navigation} main={this} />);
+        }
+    }
 }
 
 const styles = StyleSheet.create({

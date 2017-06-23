@@ -41,7 +41,7 @@ export default class TeamSearch extends Component {
     async moveOn() {
         const { navigate } = this.props.navigation;
         var team = await Team.Match(this.state.teamName);
-        navigate('user_details', {team: team})
+        navigate('user_details', {team: team, main: navigate.state.params.main})
     }
 
     render() {
