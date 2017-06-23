@@ -40,9 +40,8 @@ export default class User extends Model {
 		try { 
 			var res = await API.rawPost("/auth/sign_in/", obj);
 			var json = await res.json();
-			Alert.alert(JSON.stringify(json));
-			if(json["status"] == "success") {
-				Alert.alert("Successful Login!");
+			if(res.ok) {
+				console.warn("Successful Login!");
 				API.addHeader("access_token", res.headers["access_token"]);
 				API.addHeader("client", res.headers["client"]);
 				API.addHeader("uid", res.headers["uid"]);
