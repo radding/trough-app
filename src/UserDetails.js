@@ -35,6 +35,8 @@ export default class UserDetails extends Component {
 								password_confirmation: this.state.password_confirmation});
   		var team = this.props.navigation.state.params.team;
   		user.addTeam(team);
+		var main = this.props.navigation.state.params.main;
+		main.setLoggedin(user);
 		}
 		catch (errors) {
 			if(errors.user_error) {

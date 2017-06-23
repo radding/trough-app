@@ -1,7 +1,22 @@
 import { Model, API, Converters } from "../API";
 import { Alert } from 'react-native';
 
+import globals from "../globals.js";
+
 export default class User extends Model {
+	constructor(obj) {
+		super(obj);
+		this._isLoggedIn = false;
+	}
+
+	get isLoggedIn() {
+		return this._isLoggedIn;
+	}
+
+	set isLoggedIn(value) {
+		this._isLoggedIn = value;
+	}
+
     get jsonFields() {
       return Object.assign(super.jsonFields, {
         email: String,
@@ -22,7 +37,9 @@ export default class User extends Model {
 				API.addHeader("access_token", res.headers["access_token"]);
 				API.addHeader("client", res.headers["client"]);
 				API.addHeader("uid", res.headers["uid"]);
-				return new this(json.data)
+				globals.user = new this(json.data);
+				globals.user.isLoggedIn = true;
+				return globals.user;
 			}
 			else
 				//json["errors"]["full_messages"].map((object)=>{Alert.alert(object)})
@@ -45,7 +62,9 @@ export default class User extends Model {
 				API.addHeader("access_token", res.headers["access_token"]);
 				API.addHeader("client", res.headers["client"]);
 				API.addHeader("uid", res.headers["uid"]);
-				return new this(json.data)
+				globals.user = new this(json.data);
+				globals.user.isLoggedIn = true;
+				return globals.user;
 			}
 			else
 				throw {
