@@ -6,7 +6,8 @@ import {
   Text,
   View,
   TextInput,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 
 export default class Trough extends Component {
@@ -23,11 +24,10 @@ export default class Trough extends Component {
   async userLogin()
   {
   	this.setState({errorMessages: []})
-  	try {
-      Alert.alert("Email: " + email + "Password: " + passord)
-    var user = await User.Login({
-                email: this.state.email,
-                password: this.state.password});
+    try {
+      var user = await User.Login({
+                  email: this.state.email,
+                  password: this.state.password});
       Alert.alert(user.email);
     }
     catch (errors) {
@@ -40,7 +40,7 @@ export default class Trough extends Component {
         this.setState({errorMessages: parsed_errors});
       }
       else
-        console.warn("Something went horribly wrong");
+        console.warn("Something went horribly wrong " + JSON.stringify(errors));
     }	
   }
 
@@ -48,6 +48,7 @@ export default class Trough extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
+        {this.state.errorMessages}
         <View style={styles.overall}>
             <TextInput
                 value={this.state.email}
@@ -56,7 +57,7 @@ export default class Trough extends Component {
             />
             <TextInput
                 value={this.state.password}
-                onChangeText = {(text) => this.setState({passord: text})}
+                onChangeText = {(text) => this.setState({password: text})}
                 placeholder = "Password"
                 secureTextEntry={true}
             />

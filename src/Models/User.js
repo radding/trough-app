@@ -38,8 +38,9 @@ export default class User extends Model {
 
 	static async Login(obj) {
 		try { 
-			var res = await API.rawPost("/auth/sign_in", obj);
+			var res = await API.rawPost("/auth/sign_in/", obj);
 			var json = await res.json();
+			Alert.alert(JSON.stringify(json));
 			if(json["status"] == "success") {
 				Alert.alert("Successful Login!");
 				API.addHeader("access_token", res.headers["access_token"]);
@@ -49,7 +50,7 @@ export default class User extends Model {
 			}
 			else
 				throw {
-					details: json["errors"],
+					details: json,
 					user_error: true
 				};
 		}
