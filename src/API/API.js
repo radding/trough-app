@@ -42,6 +42,10 @@ class APIRequests {
         return this.sendRequest(url, "GET", {}).then((result) => result.json());
     }
 
+    rawPost(url, body) {
+        return this.sendRequest(url, "POST", body);
+    }
+
     post(url, body) {
         return this.sendRequest(url, "POST", body).then((result) => {
             return result.json();   

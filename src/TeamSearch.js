@@ -39,7 +39,9 @@ export default class TeamSearch extends Component {
     }
 
     async moveOn() {
+        const { navigate } = this.props.navigation;
         var team = await Team.Match(this.state.teamName);
+        navigate('user_details', {team: team})
     }
 
     render() {
@@ -67,7 +69,7 @@ export default class TeamSearch extends Component {
                     <TextInput 
                         value={this.state.teamName}
                         onChangeText = {(text) => this.setState({teamName: text})}
-                        plaeholder="Team Name"
+                        placeholder="Team Name"
                     />
                     <Button
                         title="Continue"

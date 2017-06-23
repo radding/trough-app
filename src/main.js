@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import {User} from './Models';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   TextInput,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 
 export default class Trough extends Component {
@@ -13,23 +15,50 @@ export default class Trough extends Component {
       super(props);
       this.state = {
           email: undefined,
-          password: undefined
+          password: undefined,
+				  errorMessages: []
       }
+      this.userLogin = this.userLogin.bind(this);
   }
+  
+  async userLogin()
+  {
+  	this.setState({errorMessages: []})
+    try {
+      var user = await User.Login({
+                  email: this.state.email,
+                  password: this.state.password});
+      Alert.alert(user.email);
+    }
+    catch (errors) {
+      if(errors.user_error) {
+        var parsed_errors = errors['details']['errors'].map((error) => {
+          return (
+            <Text key={error}> {error} </Text>
+          )
+        });
+        this.setState({errorMessages: parsed_errors});
+      }
+      else
+        console.warn("Something went horribly wrong " + JSON.stringify(errors));
+    }	
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
+        {this.state.errorMessages}
         <View style={styles.overall}>
             <TextInput
                 value={this.state.email}
-                onChangeText = {(text) => this.setState({text})}
+                onChangeText = {(text) => this.setState({email: text})}
                 placeholder="Email"
             />
             <TextInput
                 value={this.state.password}
-                onChangeText = {(text) => this.setState({text})}
-                placeholder="password"
+                onChangeText = {(text) => this.setState({password: text})}
+                placeholder = "Password"
                 secureTextEntry={true}
             />
             <View>
@@ -38,14 +67,12 @@ export default class Trough extends Component {
                     title="Sign Up"
                     onPress={() =>
                         navigate('signup')
-                    } 
+                    }
                 />
 
                 <Button
                     title="Login"
-                    onPress={() =>
-                        null
-                    } 
+                    onPress= {this.userLogin}
                 />
             </View>
         </View>
