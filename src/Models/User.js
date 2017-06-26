@@ -29,10 +29,10 @@ export default class User extends Model {
  	 }
 
 	static async Create(obj) {
-		try { 
+		try {
 			var res = await API.rawPost("/auth/", obj);
 			var json = await res.json();
-			if(json["status"] == "success") {
+			if (json["status"] == "success") {
 				Alert.alert("Successful registration!");
 				API.addHeader("access_token", res.headers["access_token"]);
 				API.addHeader("client", res.headers["client"]);
@@ -42,7 +42,6 @@ export default class User extends Model {
 				return globals.user;
 			}
 			else
-				//json["errors"]["full_messages"].map((object)=>{Alert.alert(object)})
 				throw {
 					details: json["errors"],
 					user_error: true
@@ -54,7 +53,7 @@ export default class User extends Model {
 	}
 
 	static async Login(obj) {
-		try { 
+		try {
 			var res = await API.rawPost("/auth/sign_in/", obj);
 			var json = await res.json();
 			if(res.ok) {
@@ -77,7 +76,7 @@ export default class User extends Model {
 		}
 	}
 
-	addTeam(team){
+	addTeam(team) {
 		this.api.post(`/teams/${team.id}/users`, this._serialize())
 	}
 

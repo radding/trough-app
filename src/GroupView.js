@@ -16,8 +16,32 @@ export default class GroupView extends Component {
     }
 
     render() {
+        var groups = [];
+
+        for(let i = 0; i < groups.length; i++){
+            groups.push(
+                <View key = {i}>
+                    <View>
+                        <TextInput />
+                    </View>
+                    <View>
+                        <TextInput />
+                    </View>
+                    <View>
+                        <TextInput />
+                    </View>
+                </View>
+            )
+        }
+        
         return (
-            <View style={styles.container}>
+            <View>
+                <View>
+                    <View><Text>No</Text></View>
+                    <View><Text>Name</Text></View>
+                    <View><Text>Preference</Text></View>
+                </View>
+                { groups }
             </View>
         )
     }
