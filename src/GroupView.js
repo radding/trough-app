@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {User} from './Models';
+import { Group } from './Models';
 import {
   AppRegistry,
   StyleSheet,
@@ -18,17 +18,25 @@ export default class GroupView extends Component {
     render() {
         var groups = [];
 
-        for(let i = 0; i < groups.length; i++){
+        for (let i = 0; i < groups.length; i++) {
             groups.push(
                 <View key = {i}>
                     <View>
-                        <TextInput />
+                        //Image of the group creator
+                        <Image />
+                        <Text value={groups.get(i).groupCreator} />
                     </View>
+                    //View
                     <View>
-                        <TextInput />
-                    </View>
-                    <View>
-                        <TextInput />
+                        //Where are we going
+                        <Text value={groups.get(i).groupName}/>
+                        //Who created Group
+                        <Text value="Would you like to join the group?"/>
+                        //Total # of people going + drop down/Link
+                        <View>
+                            <Text value={groups.get(i).attendees} />
+                            <Image />
+                        </View>
                     </View>
                 </View>
             )
@@ -36,6 +44,7 @@ export default class GroupView extends Component {
         
         return (
             <View>
+                //Create New Group?
                 <View>
                     <View><Text>No</Text></View>
                     <View><Text>Name</Text></View>
