@@ -13,6 +13,7 @@ import {
 import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
+import GroupCreate from "./GroupCreate.js";
 
 export default class Trough extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ export default class Trough extends Component {
             return ( <SignIn navigation={this.props.navigation} main={this} /> );
         }
         else {
-            return (<Feed navigation={this.props.navigation} main={this} />);
+            return (<GroupCreate navigation={this.props.navigation} main={this} />);
         }
     }
 }

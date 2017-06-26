@@ -40,7 +40,7 @@ export default class SignIn extends Component {
         this.setState({errorMessages: parsed_errors});
       }
       else
-        console.warn("Something went horribly wrong " + JSON.stringify(errors));
+        console.warn("Something went horribly wrong in userLogin() " + JSON.stringify(errors));
     }	
   }
 
