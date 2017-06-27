@@ -16,15 +16,11 @@ export default class GroupView extends Component {
     constructor(props) {
         super(props);
 				this.state = {
-					//name: undefined,
-					//address: undefined,
-					date: undefined,
-					//creator: undefined,
+					name: undefined,
+					address: undefined,
+					datetime: undefined,
 					errorMessages: []
 				}
-        //name: Object
-        //creator: Object
-
     }
 
     render() {
@@ -44,7 +40,7 @@ export default class GroupView extends Component {
 						/>
 						<DatePicker
 							style={{width: 200}}
-							date={this.state.datetime1}
+							date={this.state.datetime}
 							mode="datetime"
 							format="YYYY-MM-DD HH:mm"
 							confirmBtnText="Confirm"
@@ -61,7 +57,7 @@ export default class GroupView extends Component {
 								}
 							}}
 							minuteInterval={10}
-							onDateChange={(datetime) => {this.setState({datetime1: datetime});}}
+							onDateChange={(datetime_in) => {this.setState({datetime: datetime_in});}}
 						/>
           </View>
         </View>
