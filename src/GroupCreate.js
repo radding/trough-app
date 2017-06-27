@@ -13,56 +13,88 @@ import {
 } from 'react-native';
 
 export default class GroupView extends Component {
-    constructor(props) {
-        super(props);
-				this.state = {
-					name: undefined,
-					address: undefined,
-					datetime: undefined,
-					errorMessages: []
-				}
-    }
+  constructor(props) {
+      super(props);
+			this.state = {
+				name: undefined,
+				address: undefined,
+				datetime: undefined,
+				errorMessages: []
+			}
+			this.groupCreate = this.groupCreate.bind(this)
+  }
 
-    render() {
-      return (
-        <View style={styles.container}>
-          {this.state.errorMessages}
-        	<View style={styles.overall}>
-      			<TextInput
-							value={this.state.name}
-							onChangeText = {(text) => this.setState({name: text})}
-							placeholder="Group Name"
+	async groupCreate() {
+		this.setState({errorMessages: []})
+		try {
+			{/*
+			TODO: 
+				make create function
+				Figure out what needs to be sent
+			var group = Group.Create(await ({});
+			*/}
+		}
+		catch (errors) {
+			if(errors.user_error) {
+				var parsed_errors = errors['details']['full_messages'].map((error) => {
+					return (
+						<Text key={error}> {error} </Text>
+						)
+				});
+				this.setState({errorMessages: parsed_errors});
+			}
+			else
+				console.warn("Something went horribly wrong in Group Creation");
+		}	
+}
+
+	render() {
+	  return (
+	    <View style={styles.container}>
+	      {this.state.errorMessages}
+	    	<View style={styles.overall}>
+	  			<TextInput
+						value={this.state.name}
+						onChangeText = {(text) => this.setState({name: text})}
+						placeholder="Group Name"
+					/>
+					<TextInput
+						value={this.state.address}
+						onChangeText = {(text) => this.setState({address:text})}
+						placeholder="Location Address"
+					/>
+					<DatePicker
+						style={{width: 200}}
+						date={this.state.datetime}
+						mode="datetime"
+						format="YYYY-MM-DD HH:mm"
+						confirmBtnText="Confirm"
+						cancelBtnText="Cancel"
+						customStyles={{
+							dateIcon: {
+								position: 'absolute',
+								left: 0,
+								top: 4,
+								marginLeft: 0
+							},
+							dateInput: {
+								marginLeft: 36
+							}
+						}}
+						minuteInterval={10}
+						onDateChange={(datetime_in) => {this.setState({datetime: datetime_in});}}
+					/>
+					<View>
+						<Button
+							style={styles.button}
+							title="Create Group"
+							onPress={() => {console.warn("Group create not yet developed")}}
 						/>
-						<TextInput
-							value={this.state.address}
-							onChangeText = {(text) => this.setState({address:text})}
-							placeholder="Location Address"
-						/>
-						<DatePicker
-							style={{width: 200}}
-							date={this.state.datetime}
-							mode="datetime"
-							format="YYYY-MM-DD HH:mm"
-							confirmBtnText="Confirm"
-							cancelBtnText="Cancel"
-							customStyles={{
-								dateIcon: {
-									position: 'absolute',
-									left: 0,
-									top: 4,
-									marginLeft: 0
-								},
-								dateInput: {
-									marginLeft: 36
-								}
-							}}
-							minuteInterval={10}
-							onDateChange={(datetime_in) => {this.setState({datetime: datetime_in});}}
-						/>
-          </View>
-        </View>
-      )
-    }
+					</View>
+	      </View>
+	    </View>
+	  )
+	}
 }
 
 	const styles = StyleSheet.create({

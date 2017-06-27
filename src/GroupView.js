@@ -20,7 +20,6 @@ export default class GroupView extends Component {
     }
 
     render() {
-<<<<<<< HEAD
         var groups = [];
 
         for (let i = 0; i < groups.length; i++) {
@@ -56,10 +55,6 @@ export default class GroupView extends Component {
                     <View><Text>Preference</Text></View>
                 </View>
                 { groups }
-=======
-        return (
-            <View style={styles.container}>
->>>>>>> 052fb42b6f87b5a4e9419282b88d310e57c6c044
             </View>
         )
     }

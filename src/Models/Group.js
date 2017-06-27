@@ -23,11 +23,6 @@ export default class Group extends Model {
                 return res;
             }
         });
-<<<<<<< HEAD
-        
-=======
-        // Alert.alert(result.length);
->>>>>>> 052fb42b6f87b5a4e9419282b88d310e57c6c044
         return result.length < 1 ? this.Create({name: name}) : new this(result[0]);
     }
 }
