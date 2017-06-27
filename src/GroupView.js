@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Group, User} from './Models';
-
 import {
   AppRegistry,
   StyleSheet,
@@ -17,21 +16,21 @@ export default class GroupView extends Component {
     }
 
     render() {
+        //get all groups
         var groups = [];
 
         for (let i = 0; i < groups.length; i++) {
             groups.push(
                 <View key = {i}>
                     <View>
-                        //Image of the group creator
-                        <Image />
+                        //Name of the group creator
                         <Text value={groups.get(i).groupCreator} />
                     </View>
                     //View
                     <View>
                         //Where are we going
-                        <Text value={groups.get(i).groupName}/>
-                        //Who created Group
+                        <Text value={groups.get(i).location}/>
+                        //Joing group
                         <Text value="Would you like to join the group?"/>
                         //Total # of people going + drop down/Link
                         <View>
