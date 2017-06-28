@@ -62,18 +62,22 @@ export default class SignIn extends Component {
                 secureTextEntry={true}
             />
             <View>
-                <Button
+                <View style={styles.buttons}>
+                  <Button
+                    style={styles.button}
+                    title="Login"
+                    onPress= {this.userLogin}
+                  />
+                </View>
+                <View style={styles.buttons}>
+                  <Button
                     style={styles.button}
                     title="Sign Up"
                     onPress={() =>
                         navigate('signup', { main: this.props.main})
                     }
-                />
-
-                <Button
-                    title="Login"
-                    onPress= {this.userLogin}
-                />
+                  />
+                </View>
             </View>
         </View>
       </View>
@@ -91,7 +95,10 @@ const styles = StyleSheet.create({
   overall: {
     width: "75%"
   },
-  button: {
-    margin:30
+  buttons: {
+    margin: 10
   },
+  button: {
+    padding: 20
+  }
 });
