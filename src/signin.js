@@ -10,7 +10,10 @@ import {
   Alert
 } from 'react-native';
 
-export default class SignIn extends Component {
+import { connect } from "react-redux";
+import { mapStateToProps, mapDispatchToProps } from "./utils";
+
+class SignIn extends Component {
   constructor(props) {
       super(props);
       this.state = {
@@ -28,7 +31,7 @@ export default class SignIn extends Component {
       var user = await User.Login({
                   email: this.state.email,
                   password: this.state.password});
-      this.props.main.setLoggedin(user);
+      this.props.login_user(user);
     }
     catch (errors) {
       if(errors.user_error) {
@@ -102,3 +105,5 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

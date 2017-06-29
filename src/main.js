@@ -14,25 +14,14 @@ import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
 import GroupCreate from "./GroupCreate.js";
+import { connect } from "react-redux";
 
-export default class Trough extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoggedIn: globals.user.isLoggedIn
-        }
-        this.setLoggedin = this.setLoggedin.bind(this);
-    }
+import { mapStateToProps, mapDispatchToProps } from "./utils";
 
-    setLoggedin(user) {
-        this.setState({
-            user: user,
-            isLoggedIn: user !== null ? user.isLoggedIn : false
-        });
-    }
+class Trough extends Component {
 
     render() {
-        if(!this.state.isLoggedIn) {
+        if(!this.props.user) {
             return ( <SignIn navigation={this.props.navigation} main={this} /> );
         }
         else {
@@ -55,3 +44,5 @@ const styles = StyleSheet.create({
     margin:30
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trough);

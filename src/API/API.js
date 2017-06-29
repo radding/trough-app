@@ -1,9 +1,12 @@
+import {AsyncStorage} from "react-native";
+
 class APIRequests {
     constructor(url) {
         this.url = url
         this.headers = {
             'Content-Type': 'application/json'
         };
+        this.addHeader("Content-Type", 'application/json');
         this.addHeader = this.addHeader.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
         this.getAsync = this.getAsync.bind(this);
@@ -11,15 +14,15 @@ class APIRequests {
         this.get = this.get.bind(this);
         this.post = this.post.bind(this);
         this.delete = this.delete.bind(this); 
+        this.rawPost = this.rawPost.bind(this);
     }
 
     addHeader(name, value) {
         this.headers[name] = value;
     }
 
-    sendRequest(url, method, body) {
-        // if (body.team)
-        //     throw JSON.stringify(body);
+    async sendRequest(url, method, body) {
+       
         if (method.toLowerCase() == "get") {
             return fetch(`https://${this.url}${url}`, {
                 headers: this.headers
