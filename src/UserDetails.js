@@ -10,19 +10,21 @@ import {
   TextInput,
   Button,
 } from 'react-native';
+import { connect } from "react-redux";
 
+import { mapStateToProps, mapDispatchToProps } from "./utils";
 
-export default class UserDetails extends Component {
+class UserDetails extends Component {
   constructor(props) {
-			super(props);
-			this.state = {
-				email: undefined,
-				password: undefined,
-				password_confirmation: undefined,
-				overTwentyOne: false,
-				errorMessages: []
-			}
-			this.userCreate = this.userCreate.bind(this)
+	super(props);
+	this.state = {
+		email: undefined,
+		password: undefined,
+		password_confirmation: undefined,
+		overTwentyOne: false,
+		errorMessages: []
+	}
+	this.userCreate = this.userCreate.bind(this)
   }
 
   async userCreate()
@@ -30,26 +32,27 @@ export default class UserDetails extends Component {
   	this.setState({errorMessages: []})
   	try {
   		var user = await User.Create({
-								email: this.state.email,
-								password: this.state.password,
-								password_confirmation: this.state.password_confirmation});
+			email: this.state.email,
+			password: this.state.password,
+			password_confirmation: this.state.password_confirmation
+		});
   		var team = this.props.navigation.state.params.team;
-  		user.addTeam(team);
-		var main = this.props.navigation.state.params.main;
-		main.setLoggedin(user);
+  		await user.addTeam(team);
+		this.props.login_user(user);
+	}
+	catch (errors) {
+		if(errors.user_error) {
+			var parsed_errors = errors['details']['full_messages'].map((error) => {
+				return (
+					<Text key={error}> {error} </Text>
+					)
+			});
+			this.setState({errorMessages: parsed_errors});
 		}
-		catch (errors) {
-			if(errors.user_error) {
-				var parsed_errors = errors['details']['full_messages'].map((error) => {
-					return (
-						<Text key={error}> {error} </Text>
-						)
-				});
-				this.setState({errorMessages: parsed_errors});
-			}
-			else
-				console.warn("Something went horribly wrong");
-		}	
+		else
+			console.warn("Something went horribly wrong: " + JSON.stringify(errors));
+			throw errors;
+	}	
   }
 
   render() {
@@ -107,3 +110,5 @@ export default class UserDetails extends Component {
 			margin:30
 		},
 	});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserDetails);

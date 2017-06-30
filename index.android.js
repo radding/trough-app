@@ -21,11 +21,28 @@ import Trough from "./src/main.js";
 import TeamSearch from "./src/TeamSearch.js";
 import UserDetails from "./src/UserDetails.js"
 
-const App = StackNavigator({
+// import store from "./src/Store.js";
+import { Provider } from "react-redux"
+import { createStore, combineReducers } from "redux";
+import { usersReducers } from "./src/reducers";
+
+let store = createStore(combineReducers({usersReducers}));
+
+export default store;
+
+const AppNav = StackNavigator({
   Main: {screen: Trough},
   signup: {screen: TeamSearch},
   user_details: {screen: UserDetails}
 });
 
-
+class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Trough />
+      </Provider>
+    )
+  }
+}
 AppRegistry.registerComponent('Trough', () => App);

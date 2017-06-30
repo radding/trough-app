@@ -13,29 +13,34 @@ import {
 import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
+import GroupCreate from "./GroupCreate.js";
+import { connect } from "react-redux";
 
-export default class Trough extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoggedIn: globals.user.isLoggedIn
-        }
-        this.setLoggedin = this.setLoggedin.bind(this);
-    }
+// import Trough from "./main.js";
+import TeamSearch from "./TeamSearch.js";
+import UserDetails from "./UserDetails.js";
+import {
+  StackNavigator,
+} from 'react-navigation';
 
-    setLoggedin(user) {
-        this.setState({
-            user: user,
-            isLoggedIn: user !== null ? user.isLoggedIn : false
-        });
-    }
+import { mapStateToProps, mapDispatchToProps } from "./utils";
+
+const LandingScreen = StackNavigator({
+  Main: {screen: SignIn},
+  signup: {screen: TeamSearch},
+  user_details: {screen: UserDetails}
+});
+
+class Trough extends Component {
 
     render() {
-        if(!this.state.isLoggedIn) {
-            return ( <SignIn navigation={this.props.navigation} main={this} /> );
+        if(!this.props.user) {
+            return ( <LandingScreen /> );
         }
         else {
-            return (<Feed navigation={this.props.navigation} main={this} />);
+            // while (true)
+                // console.warn(this.props.navigation.pop());
+            return (<GroupCreate navigation={this.props.navigation} main={this} />);
         }
     }
 }
@@ -54,3 +59,5 @@ const styles = StyleSheet.create({
     margin:30
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trough);

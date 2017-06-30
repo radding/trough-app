@@ -96,6 +96,4 @@ class Model {
     
 }
 
-// Model.All = Model.All.bind(Model);
-
 export { Model };

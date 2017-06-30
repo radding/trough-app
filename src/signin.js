@@ -10,7 +10,10 @@ import {
   Alert
 } from 'react-native';
 
-export default class SignIn extends Component {
+import { connect } from "react-redux";
+import { mapStateToProps, mapDispatchToProps } from "./utils";
+
+class SignIn extends Component {
   constructor(props) {
       super(props);
       this.state = {
@@ -28,7 +31,7 @@ export default class SignIn extends Component {
       var user = await User.Login({
                   email: this.state.email,
                   password: this.state.password});
-      this.props.main.setLoggedin(user);
+      this.props.login_user(user);
     }
     catch (errors) {
       if(errors.user_error) {
@@ -40,7 +43,7 @@ export default class SignIn extends Component {
         this.setState({errorMessages: parsed_errors});
       }
       else
-        console.warn("Something went horribly wrong " + JSON.stringify(errors));
+        console.warn("Something went horribly wrong in userLogin() " + JSON.stringify(errors));
     }	
   }
 
@@ -62,18 +65,22 @@ export default class SignIn extends Component {
                 secureTextEntry={true}
             />
             <View>
-                <Button
+                <View style={styles.buttons}>
+                  <Button
+                    style={styles.button}
+                    title="Login"
+                    onPress= {this.userLogin}
+                  />
+                </View>
+                <View style={styles.buttons}>
+                  <Button
                     style={styles.button}
                     title="Sign Up"
                     onPress={() =>
                         navigate('signup', { main: this.props.main})
                     }
-                />
-
-                <Button
-                    title="Login"
-                    onPress= {this.userLogin}
-                />
+                  />
+                </View>
             </View>
         </View>
       </View>
@@ -91,7 +98,12 @@ const styles = StyleSheet.create({
   overall: {
     width: "75%"
   },
-  button: {
-    margin:30
+  buttons: {
+    margin: 10
   },
+  button: {
+    padding: 20
+  }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

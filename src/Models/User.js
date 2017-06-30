@@ -28,21 +28,24 @@ export default class User extends Model {
       });
  	 }
 
+	static UserFromJson(res, data) {
+		var user = new this(data);
+		user.headers = {};
+		user.headers.access_token = res.headers.map["access-token"];
+		user.headers.client = res.headers.map.client;
+		user.headers.uid = res.headers.map.uid;
+		user.headers.isLoggedIn = true;
+		return user;
+	}
+
 	static async Create(obj) {
-		try { 
+		try {
 			var res = await API.rawPost("/auth/", obj);
 			var json = await res.json();
-			if(json["status"] == "success") {
-				Alert.alert("Successful registration!");
-				API.addHeader("access_token", res.headers["access_token"]);
-				API.addHeader("client", res.headers["client"]);
-				API.addHeader("uid", res.headers["uid"]);
-				globals.user = new this(json.data);
-				globals.user.isLoggedIn = true;
-				return globals.user;
+			if (json["status"] == "success") {
+				return User.UserFromJson(res, json.data)
 			}
 			else
-				//json["errors"]["full_messages"].map((object)=>{Alert.alert(object)})
 				throw {
 					details: json["errors"],
 					user_error: true
@@ -54,17 +57,11 @@ export default class User extends Model {
 	}
 
 	static async Login(obj) {
-		try { 
+		try {
 			var res = await API.rawPost("/auth/sign_in/", obj);
 			var json = await res.json();
 			if(res.ok) {
-				console.warn("Successful Login!");
-				API.addHeader("access_token", res.headers["access_token"]);
-				API.addHeader("client", res.headers["client"]);
-				API.addHeader("uid", res.headers["uid"]);
-				globals.user = new this(json.data);
-				globals.user.isLoggedIn = true;
-				return globals.user;
+				return User.UserFromJson(res, json.data);
 			}
 			else
 				throw {
@@ -77,8 +74,20 @@ export default class User extends Model {
 		}
 	}
 
-	addTeam(team){
-		this.api.post(`/teams/${team.id}/users`, this._serialize())
+	async addTeam(team) {
+		var res = await this.makeRequest(this.api.rawPost, `/teams/${team.id}/users`, this._serialize());
+		var json = await res.json();
+		if (!res.ok) {
+			throw {status: res.status, errors: json, headers: this.api.headers}
+		}
+		return json;
+	}
+
+	async makeRequest(reqFunc, url, obj) {
+		this.api.addHeader("access_token", this.headers.access_token);
+		this.api.addHeader("client", this.headers.client);
+		this.api.addHeader("uid", this.headers.uid);
+		return reqFunc(url, obj);
 	}
 
 }
