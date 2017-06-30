@@ -40,7 +40,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppNav />
+        <Trough />
       </Provider>
     )
   }

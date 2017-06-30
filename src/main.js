@@ -16,15 +16,30 @@ import Feed from "./Feed.js";
 import GroupCreate from "./GroupCreate.js";
 import { connect } from "react-redux";
 
+// import Trough from "./main.js";
+import TeamSearch from "./TeamSearch.js";
+import UserDetails from "./UserDetails.js";
+import {
+  StackNavigator,
+} from 'react-navigation';
+
 import { mapStateToProps, mapDispatchToProps } from "./utils";
+
+const LandingScreen = StackNavigator({
+  Main: {screen: SignIn},
+  signup: {screen: TeamSearch},
+  user_details: {screen: UserDetails}
+});
 
 class Trough extends Component {
 
     render() {
         if(!this.props.user) {
-            return ( <SignIn navigation={this.props.navigation} main={this} /> );
+            return ( <LandingScreen /> );
         }
         else {
+            // while (true)
+                // console.warn(this.props.navigation.pop());
             return (<GroupCreate navigation={this.props.navigation} main={this} />);
         }
     }
