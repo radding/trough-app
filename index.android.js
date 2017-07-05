@@ -26,6 +26,8 @@ import { Provider } from "react-redux"
 import { createStore, combineReducers } from "redux";
 import { usersReducers } from "./src/reducers";
 
+import GroupCreate from "./src/GroupCreate"
+
 let store = createStore(combineReducers({usersReducers}));
 
 export default store;
@@ -35,6 +37,11 @@ const AppNav = StackNavigator({
   signup: {screen: TeamSearch},
   user_details: {screen: UserDetails}
 });
+
+const CreateGroup = StackNavigator({
+  main: {screen: GroupCreate},
+  places: {screen: Places}
+})
 
 class App extends Component {
   render() {

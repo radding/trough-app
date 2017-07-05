@@ -12,6 +12,8 @@ import {
   Alert,
 } from 'react-native';
 
+import Places from "./Places";
+
 export default class GroupView extends Component {
   constructor(props) {
       super(props);
@@ -19,7 +21,8 @@ export default class GroupView extends Component {
 				name: undefined,
 				address: undefined,
 				datetime: undefined,
-				errorMessages: []
+				errorMessages: [],
+				place: undefined
 			}
 			this.groupCreate = this.groupCreate.bind(this)
   }
@@ -58,10 +61,13 @@ export default class GroupView extends Component {
 						onChangeText = {(text) => this.setState({name: text})}
 						placeholder="Group Name"
 					/>
-					<TextInput
-						value={this.state.address}
-						onChangeText = {(text) => this.setState({address:text})}
-						placeholder="Location Address"
+					<Places 
+						place={this.state.place} 
+						onComplete={(place) => {
+							this.setState({
+								place: place
+							});
+						}}
 					/>
 					<DatePicker
 						style={{width: 200}}
