@@ -12,7 +12,11 @@ import {
   Alert,
 } from 'react-native';
 
-export default class GroupView extends Component {
+import { connect } from "react-redux";
+import { mapStateToProps, mapDispatchToProps } from "./utils";
+
+
+class GroupView extends Component {
   constructor(props) {
       super(props);
 			this.state = {
@@ -30,7 +34,7 @@ export default class GroupView extends Component {
 			var group = await Group.Create({
 				outing: {
           name: this.state.name,
-          user_id: globals.user.user_id,
+          user_id: this.props.user.id,
           place: {
             name: this.state.place_name
           },
@@ -115,3 +119,5 @@ export default class GroupView extends Component {
 			margin:30
 		},
 	});
+
+	export default connect(mapStateToProps, mapDispatchToProps)(GroupView);
