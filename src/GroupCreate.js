@@ -17,7 +17,7 @@ export default class GroupView extends Component {
       super(props);
 			this.state = {
 				name: undefined,
-				address: undefined,
+				place_name: undefined,
 				datetime: undefined,
 				errorMessages: []
 			}
@@ -27,12 +27,16 @@ export default class GroupView extends Component {
 	async groupCreate() {
 		this.setState({errorMessages: []})
 		try {
-			{/*
-			TODO: 
-				make create function
-				Figure out what needs to be sent
-			var group = Group.Create(await ({});
-			*/}
+			var group = await Group.Create({
+				outing: {
+          name: this.state.name,
+          user_id: globals.user.user_id,
+          place: {
+            name: this.state.place_name
+          },
+          departure_time: this.state.datetime
+        }
+			}); 
 		}
 		catch (errors) {
 			if(errors.user_error) {
