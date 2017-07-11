@@ -25,11 +25,19 @@ import {
 
 import { mapStateToProps, mapDispatchToProps } from "./utils";
 
+// import GroupCreate from "./src/GroupCreate";
+import Places from "./Places";
+
 const LandingScreen = StackNavigator({
   Main: {screen: SignIn},
   signup: {screen: TeamSearch},
   user_details: {screen: UserDetails}
 });
+
+const CreateGroup = StackNavigator({
+  main: {screen: GroupCreate},
+  places: {screen: Places}
+})
 
 class Trough extends Component {
 
@@ -40,7 +48,7 @@ class Trough extends Component {
         else {
             // while (true)
                 // console.warn(this.props.navigation.pop());
-            return (<GroupCreate navigation={this.props.navigation} main={this} />);
+            return (<CreateGroup />);
         }
     }
 }

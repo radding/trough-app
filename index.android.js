@@ -36,6 +36,11 @@ const AppNav = StackNavigator({
   user_details: {screen: UserDetails}
 });
 
+// const CreateGroup = StackNavigator({
+//   main: {screen: GroupCreate},
+//   places: {screen: Places}
+// })
+
 class App extends Component {
   render() {
     return (

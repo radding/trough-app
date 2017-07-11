@@ -12,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 
+
 export default class GroupView extends Component {
   constructor(props) {
       super(props);
@@ -19,9 +20,12 @@ export default class GroupView extends Component {
 				name: undefined,
 				address: undefined,
 				datetime: undefined,
-				errorMessages: []
+				errorMessages: [],
+				place: {name: undefined},
+				places: []
 			}
-			this.groupCreate = this.groupCreate.bind(this)
+			this.groupCreate = this.groupCreate.bind(this);
+			this._getplace = this._getplace.bind(this);
   }
 
 	async groupCreate() {
@@ -48,7 +52,14 @@ export default class GroupView extends Component {
 		}	
 }
 
+	_getplace(place) {
+		this.setState({
+			place: place
+		});
+	}
+
 	render() {
+		 const { navigate } = this.props.navigation;
 	  return (
 	    <View style={styles.container}>
 	      {this.state.errorMessages}
@@ -57,12 +68,17 @@ export default class GroupView extends Component {
 						value={this.state.name}
 						onChangeText = {(text) => this.setState({name: text})}
 						placeholder="Group Name"
+					
 					/>
 					<TextInput
-						value={this.state.address}
-						onChangeText = {(text) => this.setState({address:text})}
-						placeholder="Location Address"
-					/>
+                value={this.state.place.name}
+                onFocus={() => {
+									this.refs.places.blur();
+									navigate('places', {onComplete: this._getplace});
+								}}
+                placeholder="Where do you want to go?"
+								ref="places"
+            />
 					<DatePicker
 						style={{width: 200}}
 						date={this.state.datetime}

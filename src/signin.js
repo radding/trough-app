@@ -19,7 +19,7 @@ class SignIn extends Component {
       this.state = {
           email: undefined,
           password: undefined,
-				  errorMessages: []
+				  errorMessages: [],
       }
       this.userLogin = this.userLogin.bind(this);
   }
@@ -43,6 +43,7 @@ class SignIn extends Component {
         this.setState({errorMessages: parsed_errors});
       }
       else
+        throw errors;
         console.warn("Something went horribly wrong in userLogin() " + JSON.stringify(errors));
     }	
   }

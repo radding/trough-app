@@ -15,34 +15,53 @@ class APIRequests {
         this.post = this.post.bind(this);
         this.delete = this.delete.bind(this); 
         this.rawPost = this.rawPost.bind(this);
+        this.buildUrl = this.buildUrl.bind(this);
+        this.encodeObject = this.encodeObject.bind(this);
     }
 
     addHeader(name, value) {
         this.headers[name] = value;
     }
 
+    buildUrl(url) {
+        return `https://${this.url}${url}`;
+    }
+
+    encodeObject(obj) {
+        var encoded = Object.keys(obj).map((key) => {
+            let encoded_key = encodeURIComponent(key);
+            let encoded_value = encodeURIComponent(obj[key]);
+            return `${encoded_key}=${encoded_value}`;
+        });
+        return encoded.join("&");
+    }
+
     async sendRequest(url, method, body) {
-       
+        var url = this.buildUrl(url);       
         if (method.toLowerCase() == "get") {
-            return fetch(`https://${this.url}${url}`, {
+            var params = this.encodeObject(body || {});
+            if (params) {
+                url = `${url}?${params}`;
+            }
+            return fetch(url, {
                 headers: this.headers
             });
         }
-        return fetch(`https://${this.url}${url}`, {
+        return fetch(url, {
             method: method,
             headers: this.headers,
             body: JSON.stringify(body)
         });
     }
     
-    async get(url) {      
-        var response = await this.sendRequest(url, "GET", {});
+    async get(url, params={}) {      
+        var response = await this.sendRequest(url, "GET", params);
         var json = await response.json();
         return json;
     }
 
-    getAsync(url) {
-        return this.sendRequest(url, "GET", {}).then((result) => result.json());
+    getAsync(url, params={}) {
+        return this.sendRequest(url, "GET", params).then((result) => result.json());
     }
 
     rawPost(url, body) {
@@ -51,7 +70,7 @@ class APIRequests {
 
     post(url, body) {
         return this.sendRequest(url, "POST", body).then((result) => {
-            return result.json();   
+            return result.json();
         });
     }
 

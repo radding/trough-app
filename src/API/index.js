@@ -5,9 +5,11 @@ import {
     Nullable
 } from "./Converters.js"
 
+import {LANGS, PROMINENCE, DISTANCE, PlacesApi} from "./PlacesAPI.js";
+
 Converters = {
     TimeStamp: TimeStamp,
     Nullable: Nullable
 }
 
-export {APIRequests, API, Model, Converters};
+export {APIRequests, API, Model, Converters, LANGS, PROMINENCE, DISTANCE, PlacesApi};
