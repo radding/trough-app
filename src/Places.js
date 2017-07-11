@@ -126,6 +126,7 @@ export default class Places extends Component {
     }
 
     showPlaces(complete) {
+        const place = this.props.navigation.state.params.place;        
         return (
             <GooglePlacesAutocomplete
                 placeholder='Where do you want to go?'
@@ -164,7 +165,7 @@ export default class Places extends Component {
                     this.props.navigation.goBack();                    
                 }}
                 getDefaultValue={() => {
-                    return ''; // text input default value
+                    return place.name || ''; // text input default value
                 }}
                 query={{
                     // available options: https://developers.google.com/places/web-service/autocomplete

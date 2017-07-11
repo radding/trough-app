@@ -74,7 +74,7 @@ export default class GroupView extends Component {
                 value={this.state.place.name}
                 onFocus={() => {
 									this.refs.places.blur();
-									navigate('places', {onComplete: this._getplace});
+									navigate('places', {onComplete: this._getplace, place: this.state.place});
 								}}
                 placeholder="Where do you want to go?"
 								ref="places"
