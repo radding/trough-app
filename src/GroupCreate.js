@@ -12,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 
+
 export default class GroupView extends Component {
   constructor(props) {
       super(props);
@@ -20,9 +21,11 @@ export default class GroupView extends Component {
 				address: undefined,
 				datetime: undefined,
 				errorMessages: [],
-				place: undefined
+				place: {name: undefined},
+				places: []
 			}
-			this.groupCreate = this.groupCreate.bind(this)
+			this.groupCreate = this.groupCreate.bind(this);
+			this._getplace = this._getplace.bind(this);
   }
 
 	async groupCreate() {
@@ -49,6 +52,12 @@ export default class GroupView extends Component {
 		}	
 }
 
+	_getplace(place) {
+		this.setState({
+			place: place
+		});
+	}
+
 	render() {
 		 const { navigate } = this.props.navigation;
 	  return (
@@ -62,10 +71,10 @@ export default class GroupView extends Component {
 					
 					/>
 					<TextInput
-                value={this.state.address}
+                value={this.state.place.name}
                 onFocus={() => {
 									this.refs.places.blur();
-									navigate('places', {});
+									navigate('places', {onComplete: this._getplace});
 								}}
                 placeholder="Where do you want to go?"
 								ref="places"
