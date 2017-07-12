@@ -33,28 +33,18 @@ class GroupView extends Component {
 
 	async groupCreate() {
 		this.setState({errorMessages: []})
-		await Outing.Create({
-			name: this.state.name,
-			creator: this.props.user,
-			place: {
-				name: this.state.place.name,
-				google_place: this.state.place.place_id,
-				rating: 0
-			},
-			team_id: 1,
-			departure_time: this.state.datetime
-		});
 		try {
-			var group = await Group.Create({
-				outing: {
-          name: this.state.name,
-          user_id: this.props.user.id,
-          place: {
-            name: this.state.place_name
-          },
-          departure_time: this.state.datetime
-        }
-			}); 
+			await Outing.Create({
+				name: this.state.name,
+				creator: this.props.user,
+				place: {
+					name: this.state.place.name,
+					google_place: this.state.place.place_id,
+					rating: 0
+				},
+				team_id: 1,
+				departure_time: this.state.datetime
+			});
 		}
 		catch (errors) {
 			if(errors.user_error) {
