@@ -1,8 +1,27 @@
 import {AsyncStorage} from "react-native";
+import store from "../Store.js";
+
+var headers = {};
+var headers_did_change = false;
+
+store.subscribe(() => {
+    headers_did_change = true;
+    let state = store.getState();
+    let _headers = state.usersReducers.headers;
+    if (_headers == null) {
+        headers = {};
+        return;
+    }
+    headers = {
+        ...headers,
+        ..._headers,
+    }
+})
 
 class APIRequests {
-    constructor(url) {
-        this.url = url
+    constructor(url, protocol="https") {
+        this.url = url;
+        this.protocol = protocol;
         this.headers = {
             'Content-Type': 'application/json'
         };
@@ -15,34 +34,60 @@ class APIRequests {
         this.post = this.post.bind(this);
         this.delete = this.delete.bind(this); 
         this.rawPost = this.rawPost.bind(this);
+        this.buildUrl = this.buildUrl.bind(this);
+        this.encodeObject = this.encodeObject.bind(this);
     }
 
     addHeader(name, value) {
         this.headers[name] = value;
     }
 
+    buildUrl(url) {
+        return `${this.protocol}://${this.url}${url}`;
+    }
+
+    encodeObject(obj) {
+        var encoded = Object.keys(obj).map((key) => {
+            let encoded_key = encodeURIComponent(key);
+            let encoded_value = encodeURIComponent(obj[key]);
+            return `${encoded_key}=${encoded_value}`;
+        });
+        return encoded.join("&");
+    }
+
     async sendRequest(url, method, body) {
-       
+        var url = this.buildUrl(url);
+        if (headers_did_change) {
+            headers_did_change = false;
+            Object.keys(headers).map((key) => {
+                this.addHeader(key, headers[key]);
+            });
+        } 
         if (method.toLowerCase() == "get") {
-            return fetch(`https://${this.url}${url}`, {
+            var params = this.encodeObject(body || {});
+            if (params) {
+                url = `${url}?${params}`;
+            }
+            return fetch(url, {
                 headers: this.headers
             });
         }
-        return fetch(`https://${this.url}${url}`, {
+        let str = JSON.stringify(body);
+        return fetch(url, {
             method: method,
             headers: this.headers,
-            body: JSON.stringify(body)
+            body: str
         });
     }
     
-    async get(url) {      
-        var response = await this.sendRequest(url, "GET", {});
+    async get(url, params={}) {      
+        var response = await this.sendRequest(url, "GET", params);
         var json = await response.json();
         return json;
     }
 
-    getAsync(url) {
-        return this.sendRequest(url, "GET", {}).then((result) => result.json());
+    getAsync(url, params={}) {
+        return this.sendRequest(url, "GET", params).then((result) => result.json());
     }
 
     rawPost(url, body) {
@@ -51,7 +96,7 @@ class APIRequests {
 
     post(url, body) {
         return this.sendRequest(url, "POST", body).then((result) => {
-            return result.json();   
+            return result.json();
         });
     }
 

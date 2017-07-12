@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {User} from './Models';
+import { User } from './Models';
 import {
   AppRegistry,
   StyleSheet,
@@ -14,7 +14,10 @@ import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
 import GroupCreate from "./GroupCreate.js";
+<<<<<<< HEAD
 import { connect } from "react-redux";
+=======
+>>>>>>> Making Feed View
 
 // import Trough from "./main.js";
 import TeamSearch from "./TeamSearch.js";
@@ -25,23 +28,40 @@ import {
 
 import { mapStateToProps, mapDispatchToProps } from "./utils";
 
+// import GroupCreate from "./src/GroupCreate";
+import Places from "./Places";
+
 const LandingScreen = StackNavigator({
   Main: {screen: SignIn},
   signup: {screen: TeamSearch},
   user_details: {screen: UserDetails}
 });
 
+const CreateGroup = StackNavigator({
+  main: {screen: GroupCreate},
+  places: {screen: Places}
+});
+
 class Trough extends Component {
 
     render() {
+<<<<<<< HEAD
         if(!this.props.user) {
             return ( <LandingScreen /> );
         }
         else {
             // while (true)
                 // console.warn(this.props.navigation.pop());
-            return (<GroupCreate navigation={this.props.navigation} main={this} />);
+            return (<CreateGroup />);
         }
+=======
+        //if (!this.state.isLoggedIn) {
+            //return ( <SignIn navigation={this.props.navigation} main={this} /> );
+        //} else {
+            return ( <Feed navigation={this.props.navigation} main={this} /> );
+            /*return (<GroupCreate navigation={this.props.navigation} main={this} />);*/
+        //}
+>>>>>>> Making Feed View
     }
 }
 

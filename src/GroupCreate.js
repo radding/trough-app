@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {User} from './Models';
+import {User, Outing} from './Models';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import {
@@ -21,15 +21,29 @@ class GroupView extends Component {
       super(props);
 			this.state = {
 				name: undefined,
-				place_name: undefined,
-				datetime: undefined,
-				errorMessages: []
+				address: undefined,
+				datetime: moment(),
+				errorMessages: [],
+				place: {name: undefined},
+				places: []
 			}
-			this.groupCreate = this.groupCreate.bind(this)
+			this.groupCreate = this.groupCreate.bind(this);
+			this._getplace = this._getplace.bind(this);
   }
 
 	async groupCreate() {
 		this.setState({errorMessages: []})
+		await Outing.Create({
+			name: this.state.name,
+			creator: this.props.user,
+			place: {
+				name: this.state.place.name,
+				google_place: this.state.place.place_id,
+				rating: 0
+			},
+			team_id: 1,
+			departure_time: this.state.datetime
+		});
 		try {
 			var group = await Group.Create({
 				outing: {
@@ -56,7 +70,14 @@ class GroupView extends Component {
 		}	
 }
 
+	_getplace(place) {
+		this.setState({
+			place: place
+		});
+	}
+
 	render() {
+		 const { navigate } = this.props.navigation;
 	  return (
 	    <View style={styles.container}>
 	      {this.state.errorMessages}
@@ -65,12 +86,17 @@ class GroupView extends Component {
 						value={this.state.name}
 						onChangeText = {(text) => this.setState({name: text})}
 						placeholder="Group Name"
+					
 					/>
 					<TextInput
-						value={this.state.address}
-						onChangeText = {(text) => this.setState({address:text})}
-						placeholder="Location Address"
-					/>
+                value={this.state.place.name}
+                onFocus={() => {
+									this.refs.places.blur();
+									navigate('places', {onComplete: this._getplace, place: this.state.place});
+								}}
+                placeholder="Where do you want to go?"
+								ref="places"
+            />
 					<DatePicker
 						style={{width: 200}}
 						date={this.state.datetime}
@@ -90,13 +116,13 @@ class GroupView extends Component {
 							}
 						}}
 						minuteInterval={10}
-						onDateChange={(datetime_in) => {this.setState({datetime: datetime_in});}}
+						onDateChange={(datetime_in) => {this.setState({datetime: moment(datetime_in)});}}
 					/>
 					<View>
 						<Button
 							style={styles.button}
 							title="Create Group"
-							onPress={() => {console.warn("Group create not yet developed")}}
+							onPress={this.groupCreate}
 						/>
 					</View>
 	      </View>
@@ -120,4 +146,4 @@ class GroupView extends Component {
 		},
 	});
 
-	export default connect(mapStateToProps, mapDispatchToProps)(GroupView);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupView);

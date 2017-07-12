@@ -11,6 +11,7 @@ import {
   Button,
 } from 'react-native';
 import { connect } from "react-redux";
+import store from "./Store.js"
 
 import { mapStateToProps, mapDispatchToProps } from "./utils";
 
@@ -37,8 +38,10 @@ class UserDetails extends Component {
 			password_confirmation: this.state.password_confirmation
 		});
   		var team = this.props.navigation.state.params.team;
+		user.syncWithApi();
   		await user.addTeam(team);
-		this.props.login_user(user);
+		let action = this.props.login_user(user);
+      	store.dispatch(action);
 	}
 	catch (errors) {
 		if(errors.user_error) {

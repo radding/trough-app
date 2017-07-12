@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import {User} from './Models';
+=======
+import Feed from "./Feed.js";
+import { User } from './Models';
+>>>>>>> Making Feed View
 import {
   AppRegistry,
   StyleSheet,
@@ -12,6 +17,7 @@ import {
 
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "./utils";
+import store from "./Store.js"
 
 class SignIn extends Component {
   constructor(props) {
@@ -19,7 +25,7 @@ class SignIn extends Component {
       this.state = {
           email: undefined,
           password: undefined,
-				  errorMessages: []
+				  errorMessages: [],
       }
       this.userLogin = this.userLogin.bind(this);
   }
@@ -31,7 +37,9 @@ class SignIn extends Component {
       var user = await User.Login({
                   email: this.state.email,
                   password: this.state.password});
-      this.props.login_user(user);
+      user.syncWithApi();
+		  let action = this.props.login_user(user);
+      store.dispatch(action);
     }
     catch (errors) {
       if(errors.user_error) {
@@ -43,6 +51,7 @@ class SignIn extends Component {
         this.setState({errorMessages: parsed_errors});
       }
       else
+        throw errors;
         console.warn("Something went horribly wrong in userLogin() " + JSON.stringify(errors));
     }	
   }
@@ -79,8 +88,21 @@ class SignIn extends Component {
                     onPress={() =>
                         navigate('signup', { main: this.props.main})
                     }
+<<<<<<< HEAD
                   />
                 </View>
+=======
+                />
+                <Button
+                    title="Login"
+                    onPress={() => 
+                      this.props.main.render
+                    }
+                    /*onPress= {
+                      this.userLogin
+                    }*/
+                />
+>>>>>>> Making Feed View
             </View>
         </View>
       </View>
