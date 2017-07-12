@@ -38,6 +38,7 @@ class UserDetails extends Component {
 			password_confirmation: this.state.password_confirmation
 		});
   		var team = this.props.navigation.state.params.team;
+		user.syncWithApi();
   		await user.addTeam(team);
 		let action = this.props.login_user(user);
       	store.dispatch(action);

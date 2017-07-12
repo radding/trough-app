@@ -32,6 +32,7 @@ class SignIn extends Component {
       var user = await User.Login({
                   email: this.state.email,
                   password: this.state.password});
+      user.syncWithApi();
 		  let action = this.props.login_user(user);
       store.dispatch(action);
     }

@@ -55,13 +55,6 @@ class APIRequests {
         return encoded.join("&");
     }
 
-    // getHeadersFromStore() {
-    //     var state = store.getState();
-    //     if (state.headers) {
-    //         this.headers = state.headers;
-    //     }
-    // }
-
     async sendRequest(url, method, body) {
         var url = this.buildUrl(url);
         if (headers_did_change) {
@@ -116,8 +109,7 @@ class APIRequests {
     }
 }
 
-// const url = "trough-api.herokuapp.com";
-const url = "10.0.2.2:3000";
-const API = new APIRequests(url, protocol="http");
+const url = "trough-api.herokuapp.com";
+const API = new APIRequests(url);
 
 export { APIRequests, API }
