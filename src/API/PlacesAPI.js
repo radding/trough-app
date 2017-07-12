@@ -9,7 +9,7 @@ const LANGS = {
 
 class PlacesApi extends APIRequests {
     constructor(key, params={}) {
-        super("maps.googleapis.com/maps/api/place/nearbysearch/");
+        super("maps.googleapis.com/maps/api/place/");
         this.params = {key: key, radius: 500, ...params};
         this.search = this.search.bind(this);
         this._newPlacesApi = this._addParam.bind(this);
@@ -51,7 +51,7 @@ class PlacesApi extends APIRequests {
     }
 
     async map(cb) {
-        var objs = await this.get("json", this.params);
+        var objs = await this.get("nearbysearch/json", this.params);
         if (objs.error_message) {
             throw objs.error_message;
         }
@@ -59,7 +59,12 @@ class PlacesApi extends APIRequests {
     }
 
     resolve() {
-        return this.getAsync("json", this.params);
+        return this.getAsync("nearbysearch/json", this.params);
+    }
+
+    async with(id) {
+        var result = await this.get("details/json", {key: this.params.key, placeid: id});
+        return result;
     }
 } 
 

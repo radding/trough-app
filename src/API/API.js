@@ -1,8 +1,27 @@
 import {AsyncStorage} from "react-native";
+import store from "../Store.js";
+
+var headers = {};
+var headers_did_change = false;
+
+store.subscribe(() => {
+    headers_did_change = true;
+    let state = store.getState();
+    let _headers = state.usersReducers.headers;
+    if (_headers == null) {
+        headers = {};
+        return;
+    }
+    headers = {
+        ...headers,
+        ..._headers,
+    }
+})
 
 class APIRequests {
-    constructor(url) {
-        this.url = url
+    constructor(url, protocol="https") {
+        this.url = url;
+        this.protocol = protocol;
         this.headers = {
             'Content-Type': 'application/json'
         };
@@ -24,7 +43,7 @@ class APIRequests {
     }
 
     buildUrl(url) {
-        return `https://${this.url}${url}`;
+        return `${this.protocol}://${this.url}${url}`;
     }
 
     encodeObject(obj) {
@@ -36,8 +55,21 @@ class APIRequests {
         return encoded.join("&");
     }
 
+    // getHeadersFromStore() {
+    //     var state = store.getState();
+    //     if (state.headers) {
+    //         this.headers = state.headers;
+    //     }
+    // }
+
     async sendRequest(url, method, body) {
-        var url = this.buildUrl(url);       
+        var url = this.buildUrl(url);
+        if (headers_did_change) {
+            headers_did_change = false;
+            Object.keys(headers).map((key) => {
+                this.addHeader(key, headers[key]);
+            });
+        } 
         if (method.toLowerCase() == "get") {
             var params = this.encodeObject(body || {});
             if (params) {
@@ -47,10 +79,11 @@ class APIRequests {
                 headers: this.headers
             });
         }
+        let str = JSON.stringify(body);
         return fetch(url, {
             method: method,
             headers: this.headers,
-            body: JSON.stringify(body)
+            body: str
         });
     }
     
@@ -83,7 +116,8 @@ class APIRequests {
     }
 }
 
-const url = "trough-api.herokuapp.com";
-const API = new APIRequests(url);
+// const url = "trough-api.herokuapp.com";
+const url = "10.0.2.2:3000";
+const API = new APIRequests(url, protocol="http");
 
 export { APIRequests, API }

@@ -1,5 +1,6 @@
 import { API } from "./API.js";
 import { TimeStamp } from "./Converters.js";
+import moment from "moment";
 
 class Model {
 
@@ -49,7 +50,15 @@ class Model {
         serializedObject[this._modelName] = {};
 
         Object.keys(this.jsonFields).map((value) => {
-            serializedObject[this._modelName][value] = this[value] || null;
+            let val =  this[value];
+            if (val != null && val.__proto__ instanceof Model) {
+                let _val = val._serialize();
+                val = _val[val._modelName];
+            }
+            else if (val != null && moment.isMoment(val)) {
+                val = String(val);
+            }
+            serializedObject[this._modelName][value] = val || null;
         });
         
         return serializedObject;
@@ -87,10 +96,11 @@ class Model {
         return this.api.post(this.constructor._getURL(), this._serialize());
     }
 
-    static Create(obj) {
+    static Create(obj, save=true) {
         var object = new this();
         object.fill(obj);
-        object.save();
+        if (save)
+            object.save();
         return object;
     }
     

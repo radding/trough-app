@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {User} from './Models';
+import {User, Outing} from './Models';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import {
@@ -12,14 +12,17 @@ import {
   Alert,
 } from 'react-native';
 
+import { mapStateToProps, mapDispatchToProps } from "./utils";
+import { connect } from "react-redux";
 
-export default class GroupView extends Component {
+
+class GroupView extends Component {
   constructor(props) {
       super(props);
 			this.state = {
 				name: undefined,
 				address: undefined,
-				datetime: undefined,
+				datetime: moment(),
 				errorMessages: [],
 				place: {name: undefined},
 				places: []
@@ -30,6 +33,17 @@ export default class GroupView extends Component {
 
 	async groupCreate() {
 		this.setState({errorMessages: []})
+		await Outing.Create({
+			name: this.state.name,
+			creator: this.props.user,
+			place: {
+				name: this.state.place.name,
+				google_place: this.state.place.place_id,
+				rating: 0
+			},
+			team_id: 1,
+			departure_time: this.state.datetime
+		});
 		try {
 			{/*
 			TODO: 
@@ -98,13 +112,13 @@ export default class GroupView extends Component {
 							}
 						}}
 						minuteInterval={10}
-						onDateChange={(datetime_in) => {this.setState({datetime: datetime_in});}}
+						onDateChange={(datetime_in) => {this.setState({datetime: moment(datetime_in)});}}
 					/>
 					<View>
 						<Button
 							style={styles.button}
 							title="Create Group"
-							onPress={() => {console.warn("Group create not yet developed")}}
+							onPress={this.groupCreate}
 						/>
 					</View>
 	      </View>
@@ -127,3 +141,5 @@ export default class GroupView extends Component {
 			margin:30
 		},
 	});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupView);

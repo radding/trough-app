@@ -24,9 +24,9 @@ function ArrayOf(Mapper) {
 }
 
 function Nullable(converter) {
-		return (object) => {
-			return object ? converter(object) : null;
-		} 
+    return (object) => {
+        return object ? converter(object) : null;
+    } 
 }
 
 export {

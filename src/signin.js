@@ -12,6 +12,7 @@ import {
 
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "./utils";
+import store from "./Store.js"
 
 class SignIn extends Component {
   constructor(props) {
@@ -31,7 +32,8 @@ class SignIn extends Component {
       var user = await User.Login({
                   email: this.state.email,
                   password: this.state.password});
-      this.props.login_user(user);
+		  let action = this.props.login_user(user);
+      store.dispatch(action);
     }
     catch (errors) {
       if(errors.user_error) {
