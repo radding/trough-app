@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {User} from './Models';
+import { User } from './Models';
 import {
   AppRegistry,
   StyleSheet,
@@ -14,7 +14,10 @@ import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
 import GroupCreate from "./GroupCreate.js";
+<<<<<<< HEAD
 import { connect } from "react-redux";
+=======
+>>>>>>> Making Feed View
 
 // import Trough from "./main.js";
 import TeamSearch from "./TeamSearch.js";
@@ -42,6 +45,7 @@ const CreateGroup = StackNavigator({
 class Trough extends Component {
 
     render() {
+<<<<<<< HEAD
         if(!this.props.user) {
             return ( <LandingScreen /> );
         }
@@ -50,6 +54,14 @@ class Trough extends Component {
                 // console.warn(this.props.navigation.pop());
             return (<CreateGroup />);
         }
+=======
+        //if (!this.state.isLoggedIn) {
+            //return ( <SignIn navigation={this.props.navigation} main={this} /> );
+        //} else {
+            return ( <Feed navigation={this.props.navigation} main={this} /> );
+            /*return (<GroupCreate navigation={this.props.navigation} main={this} />);*/
+        //}
+>>>>>>> Making Feed View
     }
 }
 

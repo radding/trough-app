@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import {User} from './Models';
+=======
+import Feed from "./Feed.js";
+import { User } from './Models';
+>>>>>>> Making Feed View
 import {
   AppRegistry,
   StyleSheet,
@@ -83,8 +88,21 @@ class SignIn extends Component {
                     onPress={() =>
                         navigate('signup', { main: this.props.main})
                     }
+<<<<<<< HEAD
                   />
                 </View>
+=======
+                />
+                <Button
+                    title="Login"
+                    onPress={() => 
+                      this.props.main.render
+                    }
+                    /*onPress= {
+                      this.userLogin
+                    }*/
+                />
+>>>>>>> Making Feed View
             </View>
         </View>
       </View>
