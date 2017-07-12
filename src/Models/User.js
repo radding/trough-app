@@ -1,5 +1,6 @@
 import { Model, API, Converters } from "../API";
 import { Alert } from 'react-native';
+import Team from "./Team.js";
 
 import globals from "../globals.js";
 
@@ -7,6 +8,7 @@ export default class User extends Model {
 	constructor(obj) {
 		super(obj);
 		this._isLoggedIn = false;
+		this.syncWithApi = this.syncWithApi.bind(this);
 	}
 
 	get isLoggedIn() {
@@ -24,7 +26,8 @@ export default class User extends Model {
         uid: String,
         name: Converters.Nullable(String),
         nickname: Converters.Nullable(String),
-        image: Converters.Nullable(String)
+        image: Converters.Nullable(String),
+		teams: Converters.ArrayOf(Team)
       });
  	 }
 
@@ -72,6 +75,11 @@ export default class User extends Model {
 		catch (error) {
 			throw error;
 		}
+	}
+
+	async syncWithApi() {
+		var results = await this.makeRequest(this.api.get, '/users/me', {});
+		this.fill(results);
 	}
 
 	async addTeam(team) {

@@ -37,7 +37,7 @@ const LandingScreen = StackNavigator({
 const CreateGroup = StackNavigator({
   main: {screen: GroupCreate},
   places: {screen: Places}
-})
+});
 
 class Trough extends Component {
 
