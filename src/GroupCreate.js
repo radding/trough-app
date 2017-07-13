@@ -116,9 +116,7 @@ class GroupCreate extends Component {
 						<Button
 							style={styles.button}
 							title="Create Outing"
-							onPress= {() => {
-								navigate('details')
-							}}
+							onPress= {this.groupCreate}
 						/>
 					</View>
 	      </View>

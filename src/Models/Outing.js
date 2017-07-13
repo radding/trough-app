@@ -49,3 +49,4 @@ export default class Outing extends Model {
 }
 
 Outing.current_team = team;
+

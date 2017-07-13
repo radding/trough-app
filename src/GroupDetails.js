@@ -18,11 +18,28 @@ import { connect } from "react-redux";
 class GroupDetails extends Component {
   constructor(props) {
       super(props);
+      this.state = {
+      	errorMessages: []
+      }
       this.joinOuting = this.joinOuting.bind(this);
   }
 
   async joinOuting() {
+  	this.setState({errorMessages: []})
   	console.warn("hello")
+  	try {
+			await Outing.Join({
+				
+			});
+		}
+		catch (errors) {
+			// var parsed_errors = errors['details']['full_messages'].map((error) => {
+			// 	return (
+			// 		<Text key={error}> {error} </Text>
+			// 		)
+			// });
+			this.setState({errorMessages: errors});
+		}	
   }
 
 	render() {
@@ -73,20 +90,26 @@ class GroupDetails extends Component {
 
 		//console.warn(outing["departure_time"]);
 		return( 
-				<View style={styles.container}>
-					<Text> Title: {outing["name"]} </Text>
-					<Text> Creator: {outing["creator"]["email"]} </Text>
-					<Text> Place: {outing["place"]["name"]} </Text>
-					<Text> Date: {moment(outing["departure_time"]).format('MM/DD/YYYY')}</Text>
-					<Text> Time: {moment(outing["departure_time"]).format('hh:mm A')}</Text>
-					<Text> Attendees: </Text>
-					{attendees}
-					<Button
-							style={styles.button}
-							title="Join this Outing"
-							onPress= {this.joinOuting}
-					/>
-				</View>)
+			<View style={styles.container}>
+				{this.state.errorMessages}
+				<Text style={styles.category}> Title:</Text>
+					<Text> {outing["name"]} </Text>
+				<Text style={styles.category}> Creator:</Text>
+					<Text> {outing["creator"]["email"]} </Text>
+				<Text style={styles.category}> Place:</Text>
+					<Text> {outing["place"]["name"]} </Text>
+				<Text style={styles.category}> Date:</Text>
+					<Text> {moment(outing["departure_time"]).format('MM/DD/YYYY')}</Text>
+				<Text style={styles.category}> Time:</Text>
+					<Text> {moment(outing["departure_time"]).format('hh:mm A')}</Text>
+				<Text style={styles.category}> Attendees: </Text>
+				{attendees}
+				<Button
+						style={styles.button}
+						title="Join this Outing"
+						onPress= {this.joinOuting}
+				/>
+			</View>)
 	}
 }
 
@@ -96,6 +119,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#F5FCFF',
+	},
+	category: {
+		fontWeight: 'bold',
+		textDecorationLine: 'underline'
 	},
 	overall: {
 		width: "75%"
