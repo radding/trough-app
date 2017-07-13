@@ -32,7 +32,14 @@ class SignIn extends Component {
       var user = await User.Login({
                   email: this.state.email,
                   password: this.state.password});
-      user.syncWithApi();
+      user.syncWithApi().then( () => {
+         if (user.teams.length == 0) {
+          this.props.login_user(null);
+          throw "User is not part of a team for some reason";
+        }
+        let action = this.props.set_team(user.teams[0]);
+        store.dispatch(action);
+      }); 
 		  let action = this.props.login_user(user);
       store.dispatch(action);
     }
@@ -81,7 +88,9 @@ class SignIn extends Component {
                     style={styles.button}
                     title="Sign Up"
                     onPress={() =>
-                        navigate('signup', { main: this.props.main})
+                        navigate('signup', { main: this.props.main, action: (navigation, team) => {
+                          navigation.navigate('user_details', {team: team})
+                        }})
                     }
                   />
                 </View>

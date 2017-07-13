@@ -31,6 +31,10 @@ class GroupView extends Component {
 			this._getplace = this._getplace.bind(this);
   }
 
+	componentWillMount() {
+
+	}
+
 	async groupCreate() {
 		this.setState({errorMessages: []})
 		await Outing.Create({

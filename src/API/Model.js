@@ -91,16 +91,18 @@ class Model {
         return this.api.delete(this.url);
     }
 
-    create() {
+    async create() {
         this.new = false;
-        return this.api.post(this.constructor._getURL(), this._serialize());
+        let res = await this.api.post(this.constructor._getURL(), this._serialize());
+        this.id = res.id;
+        return res;
     }
 
-    static Create(obj, save=true) {
+    static async Create(obj, save=true) {
         var object = new this();
         object.fill(obj);
         if (save)
-            object.save();
+            await object.save();
         return object;
     }
     

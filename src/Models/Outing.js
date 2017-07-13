@@ -6,6 +6,15 @@ import {
 
 import Place from "./Place.js";
 import User from "./User.js";
+import store from "../Store.js";
+
+
+var team = {id: -1};
+store.subscribe(() => {
+    let state = store.getState();
+    team = state.usersReducers.team;
+    Outing.current_team = team;
+})
 
 export default class Outing extends Model {
     constructor(obj, headers={}) {
@@ -27,6 +36,8 @@ export default class Outing extends Model {
     }
 
      static _getURL() {
-        return `/teams/1/outings/`;
+        return `/teams/${team.id}/outings/`;
     }
 }
+
+Outing.current_team = team;

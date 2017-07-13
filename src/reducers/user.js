@@ -1,7 +1,7 @@
 import { LOGIN, LOGOUT, SETTEAM } from "../actions";
 import { cloneState } from "./utils";
 
-let newState = {user: null, headers: null, team: null};
+let newState = {user: null, headers: null, team: {id: -1}};
 
 const usersReducers = (state, action) => {
     switch (action.type) {
