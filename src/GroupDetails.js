@@ -16,6 +16,15 @@ import { mapStateToProps, mapDispatchToProps } from "./utils";
 import { connect } from "react-redux";
 
 class GroupDetails extends Component {
+  constructor(props) {
+      super(props);
+      this.joinOuting = this.joinOuting.bind(this);
+  }
+
+  async joinOuting() {
+  	console.warn("hello")
+  }
+
 	render() {
 		outing = {
 			"name": "testOuting",
@@ -52,15 +61,31 @@ class GroupDetails extends Component {
 			}]
 		};
 
+		var attendees = [];
+		for (let i = 0; i < outing["users"].length; i++) {
+			 attendees.push(
+            <View key={i}>
+                <Text> {outing["users"][i]["email"]} </Text>
+            </View>
+       )
+		}
+
+
 		//console.warn(outing["departure_time"]);
 		return( 
-				<View>
+				<View style={styles.container}>
 					<Text> Title: {outing["name"]} </Text>
 					<Text> Creator: {outing["creator"]["email"]} </Text>
 					<Text> Place: {outing["place"]["name"]} </Text>
 					<Text> Date: {moment(outing["departure_time"]).format('MM/DD/YYYY')}</Text>
 					<Text> Time: {moment(outing["departure_time"]).format('hh:mm A')}</Text>
 					<Text> Attendees: </Text>
+					{attendees}
+					<Button
+							style={styles.button}
+							title="Join this Outing"
+							onPress= {this.joinOuting}
+					/>
 				</View>)
 	}
 }
