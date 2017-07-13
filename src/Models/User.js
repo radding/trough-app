@@ -82,12 +82,16 @@ export default class User extends Model {
 		this.fill(results);
 	}
 
-	async addTeam(team) {
+	addTeam = async (team) => {
 		var res = await this.makeRequest(this.api.rawPost, `/teams/${team.id}/users`, this._serialize());
 		var json = await res.json();
 		if (!res.ok) {
 			throw {status: res.status, errors: json, headers: this.api.headers}
 		}
+		if (!this.teams) {
+			this.teams = [];
+		} 
+		this.teams.push(team);
 		return json;
 	}
 

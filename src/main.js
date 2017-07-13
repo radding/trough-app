@@ -13,7 +13,7 @@ import {
 import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
-import GroupCreate from "./GroupCreate.js";
+import GroupView from "./GroupView.js";
 import { connect } from "react-redux";
 
 // import Trough from "./main.js";
@@ -27,6 +27,7 @@ import { mapStateToProps, mapDispatchToProps } from "./utils";
 
 // import GroupCreate from "./src/GroupCreate";
 import Places from "./Places";
+import TeamSelect from "./TeamSelect.js";
 
 const LandingScreen = StackNavigator({
   Main: {screen: SignIn},
@@ -34,9 +35,11 @@ const LandingScreen = StackNavigator({
   user_details: {screen: UserDetails}
 });
 
-const CreateGroup = StackNavigator({
-  main: {screen: GroupCreate},
-  places: {screen: Places}
+const ViewGroup = StackNavigator({
+  main: {screen: GroupView},
+  places: {screen: Places},
+  team_select: {screen: TeamSelect},
+  team_create: {screen: TeamSearch}
 });
 
 class Trough extends Component {
@@ -48,7 +51,7 @@ class Trough extends Component {
         else {
             // while (true)
                 // console.warn(this.props.navigation.pop());
-            return (<CreateGroup />);
+            return (<ViewGroup />);
         }
     }
 }

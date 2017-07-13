@@ -20,9 +20,7 @@ function ArrayOf(Mapper) {
     return (arr) => {
         arr = arr || [];
         return arr.map((object) => {
-            if (Mapper.prototype instanceof Model)
-                return new Mapper(object);
-            return Mapper(object);
+            return new Mapper(object);
         });
     }
 }
