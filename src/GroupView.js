@@ -69,9 +69,6 @@ class GroupView extends Component {
 
     }
 
-    componentWillMount() {
-    }
-
     setOutings = async () => {
         if (Outing.current_team.id >= 0) {
             let outings = await Outing.All({exclude_me: true});
