@@ -79,7 +79,7 @@ class GroupCreate extends Component {
 	  			<TextInput
 						value={this.state.name}
 						onChangeText = {(text) => this.setState({name: text})}
-						placeholder="Group Name"
+						placeholder="Outing Name"
 					
 					/>
 					<TextInput
@@ -115,9 +115,9 @@ class GroupCreate extends Component {
 					<View>
 						<Button
 							style={styles.button}
-							title="Create Group"
+							title="Create Outing"
 							onPress= {() => {
-								navigate('view')
+								navigate('details')
 							}}
 						/>
 					</View>

@@ -17,7 +17,43 @@ import { connect } from "react-redux";
 
 class GroupDetails extends Component {
 	render() {
-		return( <Text> Hello </Text>)
+		outing = {
+			"name": "testOuting",
+			"team_id": 1,
+			"departure_time": "2000-01-01T12:00:00.000Z",
+			"place": {
+				"id": 1,
+				"name": "foobar"
+			},
+			"creator": {
+				"id": 1,
+				"uid": "test@email.com",
+				"name": null,
+				"email": "test@email.com",
+				"teams":[{
+					"id": 1,
+					"created_at": "junk",
+					"updated_at": "junk",
+					"name": "snackers"
+				}]
+			},
+			"users": [{
+				"id": 2,
+				"uid": "test2@email.com",
+				"name": null,
+				"email": "test2@email.com",
+				"teams":[{
+					"id": 1,
+					"created_at": "junk",
+					"updated_at": "junk",
+					"name": "snackers"
+				}]
+			}]
+		};
+		return( 
+				<View>
+					<Text> outing["name"] </Text>
+				</View>)
 	}
 }
 
