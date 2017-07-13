@@ -28,8 +28,8 @@ class GroupDetails extends Component {
   	this.setState({errorMessages: []})
   	console.warn("hello")
   	try {
-			await Outing.Join({
-				
+			outing = await Outing.Join({
+				//user: user.json
 			});
 		}
 		catch (errors) {
