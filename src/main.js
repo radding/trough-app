@@ -36,10 +36,10 @@ const LandingScreen = StackNavigator({
   user_details: {screen: UserDetails}
 });
 
-const ViewGroup = StackNavigator({
+
+const CreateGroup = StackNavigator({
   main: {screen: GroupView},
   create: {screen: GroupCreate},
-  places: {screen: Places},
   details: {screen: GroupDetails},
   team_select: {screen: TeamSelect},
   team_create: {screen: TeamSearch}
