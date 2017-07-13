@@ -20,9 +20,10 @@ class GroupDetails extends Component {
 		outing = {
 			"name": "testOuting",
 			"team_id": 1,
-			"departure_time": "2000-01-01T12:00:00.000Z",
+			"departure_time": "2000-01-01T12:00:00.000",
 			"place": {
 				"id": 1,
+				"google_place": "FOOBAR google_place string",
 				"name": "foobar"
 			},
 			"creator": {
@@ -50,9 +51,16 @@ class GroupDetails extends Component {
 				}]
 			}]
 		};
+
+		//console.warn(outing["departure_time"]);
 		return( 
 				<View>
-					<Text> outing["name"] </Text>
+					<Text> Title: {outing["name"]} </Text>
+					<Text> Creator: {outing["creator"]["email"]} </Text>
+					<Text> Place: {outing["place"]["name"]} </Text>
+					<Text> Date: {moment(outing["departure_time"]).format('MM/DD/YYYY')}</Text>
+					<Text> Time: {moment(outing["departure_time"]).format('hh:mm A')}</Text>
+					<Text> Attendees: </Text>
 				</View>)
 	}
 }
