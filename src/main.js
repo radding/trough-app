@@ -37,7 +37,7 @@ const LandingScreen = StackNavigator({
 });
 
 
-const CreateGroup = StackNavigator({
+const ViewGroup = StackNavigator({
   main: {screen: GroupView},
   create: {screen: GroupCreate},
   details: {screen: GroupDetails},
