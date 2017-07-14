@@ -28,7 +28,10 @@ class Group extends Component {
         const { navigate } = this.props.navigation        
         return (
             <TouchableOpacity onPress={ _ => {
-                navigate("details", {outing: this.props.group});
+                navigate("details", {outing: this.props.group, join: (group) => {
+                    this.props.add(this.props.group);
+                    this.props.remove(this.props.group);
+                }});
             } } style={styles.row} >
                 <View style={{flexDirection: "column"}}>
                     <View style={{backgroundColor: "#CCC"}}>
