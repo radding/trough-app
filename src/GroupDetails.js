@@ -70,7 +70,10 @@ class GroupDetails extends Component {
 				<Button
 						style={styles.button}
 						title="Join this Outing"
-						onPress= {this.joinOuting}
+						onPress= {() => {
+							this.props.navigation.state.params.join(outing);
+							this.props.navigation.goBack();
+						}}
 				/>
 			</View>)
 	}
