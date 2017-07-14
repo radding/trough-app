@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Outing, User} from './Models';
-
+import moment from 'moment';
 import {
   AppRegistry,
   ListView,
@@ -38,7 +38,7 @@ class Group extends Component {
                         <Text style={{padding: 10, fontSize: 18}}>{this.props.group.name}</Text>
                     </View>
                     <View style={{padding: 10, backgroundColor: "#FFF"}}>
-                        <Text style={{fontSize: 16}}>{this.props.group.users.length} people are going to {this.props.group.place.name}, at {this.props.group.departure_time}.  Select to see who is going.</Text>
+                        <Text style={{fontSize: 16}}>{this.props.group.users.length} people are going to {this.props.group.place.name}, at {moment(this.props.group.departure_time).format('hh:mm A')} on {moment(this.props.group.departure_time).format('dddd, MM/DD/YYYY')}. Select to see who is going</Text>
                     </View>
                     <View style={{width: "100%", paddingTop: 10, flexDirection: "row", backgroundColor: "#FFF"}}>
                         <View style={{flex: 1}}>
@@ -177,12 +177,14 @@ GroupView.navigationOptions = props => {
         return {
             "title": <Text style={{fontSize: 22, marginRight: 10, alignSelf: "center"}}>Outings</Text>,
             "headerRight": 
+                    <View style={{marginRight: 10}}>
                         <Button
                             title="Change Team"
                             onPress={() => {
                             navigate("team_select");
                             }}
                         />
+                    </View>
         }
 }
 
