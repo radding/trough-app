@@ -28,8 +28,7 @@ class Group extends Component {
         const { navigate } = this.props.navigation        
         return (
             <TouchableOpacity onPress={ _ => {
-                {/*navigate("")*/}
-                console.warn("Not implemented");
+                navigate("details", {outing: this.props.group});
             } } style={styles.row} >
                 <View style={{flexDirection: "column"}}>
                     <View style={{backgroundColor: "#CCC"}}>
@@ -77,9 +76,6 @@ class GroupView extends Component {
             this.setOutings();
         })
 
-    }
-
-    componentWillMount() {
     }
 
     setOutings = async () => {
