@@ -43,6 +43,7 @@ class GroupDetails extends Component {
   }
 
 	render() {
+		//this.props.navigation.props.outing
 		outing = {
 			"name": "testOuting",
 			"team_id": 1,
@@ -92,18 +93,14 @@ class GroupDetails extends Component {
 		return( 
 			<View style={styles.container}>
 				{this.state.errorMessages}
-				<Text style={styles.category}> Title:</Text>
-					<Text> {outing["name"]} </Text>
-				<Text style={styles.category}> Creator:</Text>
-					<Text> {outing["creator"]["email"]} </Text>
-				<Text style={styles.category}> Place:</Text>
-					<Text> {outing["place"]["name"]} </Text>
-				<Text style={styles.category}> Date:</Text>
-					<Text> {moment(outing["departure_time"]).format('MM/DD/YYYY')}</Text>
-				<Text style={styles.category}> Time:</Text>
-					<Text> {moment(outing["departure_time"]).format('hh:mm A')}</Text>
-				<Text style={styles.category}> Attendees: </Text>
-				{attendees}
+				<Text style={styles.title}>{outing["name"]}</Text>
+					<Text> {outing["creator"]["email"]} is going to
+					<Text style={styles.emphasis}> {outing["place"]["name"]}</Text>  </Text>
+					<Text>On {moment(outing["departure_time"]).format('MM/DD/YYYY')} </Text>
+					<Text>At {moment(outing["departure_time"]).format('hh:mm A')} </Text>
+				<Text>{"\n"}These people are attending: </Text>
+					{attendees}
+				<Text>{"\n"}</Text>
 				<Button
 						style={styles.button}
 						title="Join this Outing"
@@ -116,13 +113,15 @@ class GroupDetails extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#F5FCFF',
 	},
-	category: {
+	title: {
 		fontWeight: 'bold',
-		textDecorationLine: 'underline'
+		fontSize: 30
+	},
+	emphasis: {
+		fontWeight: 'bold'
 	},
 	overall: {
 		width: "75%"
