@@ -42,7 +42,7 @@ export default class Outing extends Model {
 
     async addUser(user){
         let url = this.myUrl;
-        url = "${url}/users";
+        url = `${url}/users`;
         this.api.post(url, user._serialize());
         // return json;
     }

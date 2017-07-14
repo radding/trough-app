@@ -36,11 +36,14 @@ class Group extends Component {
                 <View>
                     <Button 
                         title="No"
-                        onPress={() => console.warn("Pressed No")}
+                        onPress={() => this.props.remove(this.props.group)}
                     />
                     <Button 
                         title="Yes"
-                        onPress={() => console.warn("Pressed Yes")}
+                        onPress={() => {
+                            this.props.add(this.props.group);
+                            this.props.remove(this.props.group);
+                        }}
                     />
                 </View>
 
@@ -106,7 +109,17 @@ class GroupView extends Component {
                 />
                 <SwipeListView 
                     dataSource={this.ds.cloneWithRows(this.state.outings)}
-                    renderRow={(group) => <Group group={group} navigation={this.props.navigation} /> }
+                    renderRow={(group, secId, rowId, rowMap) => 
+                        <Group 
+                            group={group} 
+                            navigation={this.props.navigation} 
+                            remove={(group) => {
+                                this.deleteRow(secId, rowId, rowMap);
+                            }}
+                            add={ async (group) => {
+                                this.accept(secId, rowId, rowMap, group);
+                            }}
+                        /> }
                     leftOpenValue={25}
                     rightOpenValue={-100}
                     renderHiddenRow={ (data, secId, rowId, rowMap) => (
