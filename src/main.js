@@ -25,7 +25,7 @@ import {
 
 import { mapStateToProps, mapDispatchToProps } from "./utils";
 
-// import GroupCreate from "./src/GroupCreate";
+import GroupCreate from "./GroupCreate";
 import Places from "./Places";
 import TeamSelect from "./TeamSelect.js";
 
@@ -37,6 +37,7 @@ const LandingScreen = StackNavigator({
 
 const ViewGroup = StackNavigator({
   main: {screen: GroupView},
+  create: {screen: GroupCreate},
   places: {screen: Places},
   team_select: {screen: TeamSelect},
   team_create: {screen: TeamSearch}

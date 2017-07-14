@@ -48,6 +48,7 @@ class GroupView extends Component {
 			team_id: 1,
 			departure_time: this.state.datetime
 		});
+		this.props.navigation.goBack();
 		try {
 			{/*
 			TODO: 

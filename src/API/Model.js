@@ -73,8 +73,8 @@ class Model {
         return this.constructor(API.get(url));
     }
 
-    static async All() {
-        var res = await API.get(this._getURL());
+    static async All(params={}) {
+        var res = await API.get(this._getURL(), params);
         var arr = res.map((obj) => new this(obj));
         return arr;
     }

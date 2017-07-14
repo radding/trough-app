@@ -10,6 +10,7 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "react": "16.0.0-alpha.12",
+    "react-mixin": "^2.0.2",
     "react-native": "0.45.0",
     "react-native-autocomplete-input": "^3.3.0",
     "react-native-checkbox": "^1.1.0",
@@ -17,8 +18,10 @@
     "react-native-flip-card": "^3.4.1",
     "react-native-google-places-autocomplete": "^1.2.12",
     "react-native-maps": ">=0.15.3",
+    "react-native-swipe-list-view": "git+https://github.com/radding/react-native-swipe-list-view.git",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.5",
+    "react-timer-mixin": "^0.13.3",
     "redux": "^3.7.1",
     "v3-yelp-api": "^1.0.2"
   },
