@@ -36,7 +36,7 @@ export default class Outing extends Model {
     }
 
      static _getURL() {
-        return `/teams/${team.id}/outings/`;
+        return `/teams/${team.id}/outings`;
     }
 }
 
