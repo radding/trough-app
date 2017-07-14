@@ -14,6 +14,7 @@ import globals from "./globals.js";
 import SignIn from "./signin.js";
 import Feed from "./Feed.js";
 import GroupView from "./GroupView.js";
+import GroupDetails from "./GroupDetails.js";
 import { connect } from "react-redux";
 
 // import Trough from "./main.js";
@@ -35,13 +36,14 @@ const LandingScreen = StackNavigator({
   user_details: {screen: UserDetails}
 });
 
+
 const ViewGroup = StackNavigator({
   main: {screen: GroupView},
   create: {screen: GroupCreate},
-  places: {screen: Places},
+  details: {screen: GroupDetails},
   team_select: {screen: TeamSelect},
   team_create: {screen: TeamSearch}
-});
+})
 
 class Trough extends Component {
 

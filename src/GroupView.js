@@ -28,25 +28,34 @@ class Group extends Component {
         const { navigate } = this.props.navigation        
         return (
             <TouchableOpacity onPress={ _ => {
-                {/*navigate("")*/}
-                console.warn("Not implemented");
+                navigate("details", {outing: this.props.group});
             } } style={styles.row} >
-                <Text>{this.props.group.creator.name} is going to {this.props.group.place.name}.</Text>
-                <Text>Want to Join?</Text>
-                <View>
-                    <Button 
-                        title="No"
-                        onPress={() => this.props.remove(this.props.group)}
-                    />
-                    <Button 
-                        title="Yes"
-                        onPress={() => {
-                            this.props.add(this.props.group);
-                            this.props.remove(this.props.group);
-                        }}
-                    />
+                <View style={{flexDirection: "column"}}>
+                    <View style={{backgroundColor: "#CCC"}}>
+                        <Text style={{padding: 10, fontSize: 18}}>{this.props.group.name}</Text>
+                    </View>
+                    <View style={{padding: 10, backgroundColor: "#FFF"}}>
+                        <Text style={{fontSize: 16}}>{this.props.group.users.length} people are going to {this.props.group.place.name}, at {this.props.group.departure}.  Select to see who is going.</Text>
+                    </View>
+                    <View style={{width: "100%", paddingTop: 10, flexDirection: "row", backgroundColor: "#FFF"}}>
+                        <View style={{flex: 1}}>
+                            <Button 
+                                title="Join This Outing"
+                                onPress={() => {
+                                    this.props.add(this.props.group);
+                                    this.props.remove(this.props.group);
+                                }}
+                                style={{borderRightWidth: 1, borderColor: "#000"}}
+                            />
+                        </View>
+                        <View style={{flex: 1}}>
+                            <Button 
+                                title="Hide This Outing"
+                                onPress={() => this.props.remove(this.props.group)}
+                            />
+                        </View>
+                    </View>
                 </View>
-
             </TouchableOpacity>
         )
 
@@ -69,9 +78,6 @@ class GroupView extends Component {
 
     }
 
-    componentWillMount() {
-    }
-
     setOutings = async () => {
         if (Outing.current_team.id >= 0) {
             let outings = await Outing.All({exclude_me: true});
@@ -86,7 +92,7 @@ class GroupView extends Component {
         return (
             
             <View>
-                <Text>There are no Group outings, Create one now</Text>
+                <Text style={{fontSize: 18, margin: 10}}>There are no Group outings, Create one now</Text>
                 <Button 
                     title="Create an Outing"
                     onPress={() => {
@@ -100,13 +106,15 @@ class GroupView extends Component {
     _renderAll = () => {
         const { navigate } = this.props.navigation;      
         return (
-            <View>
-                <Button 
-                    title="Create an Outing"
-                    onPress={() => {
-                        navigate("create");
-                    }}
-                />
+            <View style={{backgroundColor: "#f0f8ff"}}>
+                <View style={{marginTop: 30}}>    
+                    <Button 
+                        title="Create an Outing"
+                        onPress={() => {
+                            navigate("create");
+                        }}
+                    />
+                </View>
                 <SwipeListView 
                     dataSource={this.ds.cloneWithRows(this.state.outings)}
                     renderRow={(group, secId, rowId, rowMap) => 
@@ -164,7 +172,7 @@ GroupView.navigationOptions = props => {
     const { state, setParams, navigate } = navigation;
     const { params } = state;
         return {
-            "headerTitle": "Outings",
+            "headerRight": <Text style={{fontSize: 22, marginRight: 10}}>Outings</Text>,
             "headerLeft": 
                         <Button
                             title="Change Team"
@@ -180,7 +188,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(GroupView);
 
 const styles = {
     row: {
-        backgroundColor: "white"
+        backgroundColor: "#f0f8ff",
+        paddingTop: 30
     },
     rowBack: {
 		alignItems: 'center',

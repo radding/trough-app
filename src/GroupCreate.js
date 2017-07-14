@@ -16,7 +16,7 @@ import { mapStateToProps, mapDispatchToProps } from "./utils";
 import { connect } from "react-redux";
 
 
-class GroupView extends Component {
+class GroupCreate extends Component {
   constructor(props) {
       super(props);
 			this.state = {
@@ -37,25 +37,18 @@ class GroupView extends Component {
 
 	async groupCreate() {
 		this.setState({errorMessages: []})
-		await Outing.Create({
-			name: this.state.name,
-			creator: this.props.user,
-			place: {
-				name: this.state.place.name,
-				google_place: this.state.place.place_id,
-				rating: 0
-			},
-			team_id: 1,
-			departure_time: this.state.datetime
-		});
-		this.props.navigation.goBack();
 		try {
-			{/*
-			TODO: 
-				make create function
-				Figure out what needs to be sent
-			var group = Group.Create(await ({});
-			*/}
+			await Outing.Create({
+				name: this.state.name,
+				creator: this.props.user,
+				place: {
+					name: this.state.place.name,
+					google_place: this.state.place.place_id,
+					rating: 0
+				},
+				team_id: 1,
+				departure_time: this.state.datetime
+			});
 		}
 		catch (errors) {
 			if(errors.user_error) {
@@ -78,7 +71,7 @@ class GroupView extends Component {
 	}
 
 	render() {
-		 const { navigate } = this.props.navigation;
+		const { navigate, goBack } = this.props.navigation;
 	  return (
 	    <View style={styles.container}>
 	      {this.state.errorMessages}
@@ -86,7 +79,7 @@ class GroupView extends Component {
 	  			<TextInput
 						value={this.state.name}
 						onChangeText = {(text) => this.setState({name: text})}
-						placeholder="Group Name"
+						placeholder="Outing Name"
 					
 					/>
 					<TextInput
@@ -122,8 +115,8 @@ class GroupView extends Component {
 					<View>
 						<Button
 							style={styles.button}
-							title="Create Group"
-							onPress={this.groupCreate}
+							title="Create Outing"
+							onPress= {this.groupCreate}
 						/>
 					</View>
 	      </View>
@@ -132,19 +125,26 @@ class GroupView extends Component {
 	}
 }
 
-	const styles = StyleSheet.create({
-		container: {
-			flex: 1,
-			justifyContent: 'center',
-			alignItems: 'center',
-			backgroundColor: '#F5FCFF',
-		},
-		overall: {
-			width: "75%"
-		},
-		button: {
-			margin:30
-		},
-	});
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#F5FCFF',
+	},
+	overall: {
+		width: "75%"
+	},
+	button: {
+		margin:30
+	},
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupView);
+GroupCreate.navigationOptions = props => {
+	const { navigation } = props;
+	const { state, setParams, navigate } = navigation;
+  const { params } = state; 
+  return {onTransitionStart: () => {throw "hello"}}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupCreate);
