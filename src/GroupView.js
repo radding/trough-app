@@ -28,8 +28,7 @@ class Group extends Component {
         const { navigate } = this.props.navigation        
         return (
             <TouchableOpacity onPress={ _ => {
-                {/*navigate("")*/}
-                console.warn("Not implemented");
+                navigate("details", {group: this.props.group});
             } } style={styles.row} >
                 <Text>{this.props.group.creator.name} is going to {this.props.group.place.name}.</Text>
                 <Text>Want to Join?</Text>
