@@ -19,6 +19,7 @@ store.subscribe(() => {
 export default class Outing extends Model {
     constructor(obj, headers={}) {
         super(obj);
+        this.addUser = this.addUser.bind(this);
     }
     
     get jsonFields() {
@@ -37,6 +38,13 @@ export default class Outing extends Model {
 
      static _getURL() {
         return `/teams/${team.id}/outings`;
+    }
+
+    async addUser(user){
+        let url = this.myUrl;
+        url = "${url}/users";
+        this.api.post(url, user._serialize());
+        // return json;
     }
 }
 

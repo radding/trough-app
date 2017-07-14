@@ -20,6 +20,8 @@ import reactMixin from "react-mixin";
 import TimerMixin from 'react-timer-mixin';
 
 import store from "./Store.js";
+import { mapStateToProps, mapDispatchToProps } from "./utils";
+import { connect } from "react-redux";
 
 class Group extends Component {
     render() {
@@ -28,7 +30,7 @@ class Group extends Component {
             <TouchableOpacity onPress={ _ => {
                 {/*navigate("")*/}
                 console.warn("Not implemented");
-            } }>
+            } } style={styles.row} >
                 <Text>{this.props.group.creator.name} is going to {this.props.group.place.name}.</Text>
                 <Text>Want to Join?</Text>
                 <View>
@@ -93,25 +95,39 @@ class GroupView extends Component {
     }
 
     _renderAll = () => {
+        const { navigate } = this.props.navigation;      
         return (
             <View>
+                <Button 
+                    title="Create an Outing"
+                    onPress={() => {
+                        navigate("create");
+                    }}
+                />
                 <SwipeListView 
                     dataSource={this.ds.cloneWithRows(this.state.outings)}
                     renderRow={(group) => <Group group={group} navigation={this.props.navigation} /> }
+                    leftOpenValue={25}
+                    rightOpenValue={-100}
                     renderHiddenRow={ (data, secId, rowId, rowMap) => (
 							<View style={styles.rowBack}>
-								<Text>Left</Text>
-								<View style={[styles.backRightBtn, styles.backRightBtnLeft]}>
-									<Text style={styles.backTextWhite}>Right</Text>
-								</View>
+								<TouchableOpacity style={[styles.backRightBtnLeft, styles.backRightBtn]} onPress={ _ => this.accept(secId, rowId, rowMap, data) }>
+									<Text style={styles.backTextWhite}>Let's Go!</Text>
+                                </TouchableOpacity>
 								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(secId, rowId, rowMap) }>
-									<Text style={styles.backTextWhite}>Delete</Text>
+									<Text style={styles.backTextWhite}>No Thanks.</Text>
 								</TouchableOpacity>
 							</View>
 						)}
                 />
             </View>
         )
+    }
+
+    accept = async (secId, rowId, rowMap, group) => {
+        let user = new User(this.props.user);
+        await group.addUser(user);
+        this.deleteRow(secId, rowId, rowMap);
     }
 
     render() {
@@ -121,6 +137,13 @@ class GroupView extends Component {
             </View>
         )
     }
+
+    deleteRow = (secId, rowId, rowMap) => {
+		rowMap[`${secId}${rowId}`].closeRow();
+		const newData = [...this.state.outings];
+		newData.splice(rowId, 1);
+		this.setState({outings: newData});
+	}
 }
 
 GroupView.navigationOptions = props => {
@@ -140,6 +163,35 @@ GroupView.navigationOptions = props => {
 }
 
 reactMixin(GroupView.prototype, TimerMixin);
-export default GroupView;
+export default connect(mapStateToProps, mapDispatchToProps)(GroupView);
 
-const styles = StyleSheet.create({ });
+const styles = {
+    row: {
+        backgroundColor: "white"
+    },
+    rowBack: {
+		alignItems: 'center',
+		backgroundColor: '#DDD',
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingLeft: 15,
+	},
+	backRightBtn: {
+		alignItems: 'center',
+		bottom: 0,
+		justifyContent: 'center',
+		position: 'absolute',
+		top: 0,
+        width: "50%",
+        height: "100%"        
+	},
+	backRightBtnLeft: {
+		backgroundColor: '#bada55',
+        width: "50%",
+	},
+	backRightBtnRight: {
+		backgroundColor: 'red',
+		right: 0
+	},
+}
