@@ -55,42 +55,48 @@ class GroupDetails extends Component {
 		}
 
 
-		//console.warn(outing["departure_time"]);
 		return( 
 			<View style={styles.container}>
 				{this.state.errorMessages}
 				<Text style={styles.title}>{outing["name"]}</Text>
-					<Text> {outing["creator"]["email"]} is going to
-					<Text style={styles.emphasis}> {outing["place"]["name"]}</Text>  </Text>
+				<View style={styles.body}>
+					<Text>{outing["creator"]["email"]} is going to
+						<Text style={styles.emphasis}> {outing["place"]["name"]}</Text> 
+				  </Text>
 					<Text>On {moment(outing["departure_time"]).format('MM/DD/YYYY')} </Text>
 					<Text>At {moment(outing["departure_time"]).format('hh:mm A')} </Text>
-				<Text>{"\n"}These people are attending: </Text>
-					{attendees}
-				<Text>{"\n"}</Text>
+					<Text style={styles.emphasis}>{"\n"}These people are attending: </Text>
+						{attendees}
+					<Text>{"\n"}</Text>
+				</View>
 				<Button
 						style={styles.button}
 						title="Join this Outing"
-						onPress= {this.joinOuting}
+						onPress= {() => {
+							this.props.navigation.state.params.join(outing);
+							this.props.navigation.goBack();
+						}}
 				/>
-			</View>)
+			</View>
+			)
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		backgroundColor: '#F5FCFF',
+		backgroundColor: '#F5FCFF'
 	},
 	title: {
 		fontWeight: 'bold',
-		fontSize: 30
+		fontSize: 30,
+		textAlign: 'center'
 	},
 	emphasis: {
 		fontWeight: 'bold'
 	},
-	overall: {
-		width: "75%"
+	body: {
+		paddingLeft: 10
 	},
 	button: {
 		margin:30
