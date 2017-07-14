@@ -172,7 +172,7 @@ GroupView.navigationOptions = props => {
     const { state, setParams, navigate } = navigation;
     const { params } = state;
         return {
-            "headerTitle": "Outings",
+            "headerRight": <Text style={{fontSize: 22, marginRight: 10}}>Outings</Text>,
             "headerLeft": 
                         <Button
                             title="Change Team"
