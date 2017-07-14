@@ -28,7 +28,8 @@ export default class Outing extends Model {
             place: Place,
             departure_time: Converters.TimeStamp,
             creator: User,
-            team_id: Number
+            team_id: Number,
+            users: Converters.ArrayOf(User)
         });
     }
 

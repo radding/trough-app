@@ -43,49 +43,15 @@ class GroupDetails extends Component {
   }
 
 	render() {
-		//this.props.navigation.props.outing
-		outing = {
-			"name": "testOuting",
-			"team_id": 1,
-			"departure_time": "2000-01-01T12:00:00.000",
-			"place": {
-				"id": 1,
-				"google_place": "FOOBAR google_place string",
-				"name": "foobar"
-			},
-			"creator": {
-				"id": 1,
-				"uid": "test@email.com",
-				"name": null,
-				"email": "test@email.com",
-				"teams":[{
-					"id": 1,
-					"created_at": "junk",
-					"updated_at": "junk",
-					"name": "snackers"
-				}]
-			},
-			"users": [{
-				"id": 2,
-				"uid": "test2@email.com",
-				"name": null,
-				"email": "test2@email.com",
-				"teams":[{
-					"id": 1,
-					"created_at": "junk",
-					"updated_at": "junk",
-					"name": "snackers"
-				}]
-			}]
-		};
+		var outing = this.props.navigation.state.params.outing
 
 		var attendees = [];
 		for (let i = 0; i < outing["users"].length; i++) {
 			 attendees.push(
-            <View key={i}>
-                <Text> {outing["users"][i]["email"]} </Text>
-            </View>
-       )
+	          <View key={i}>
+	              <Text> {outing["users"][i]["email"]} </Text>
+	          </View>
+	     )
 		}
 
 
